@@ -246,4 +246,60 @@ public class AdminAccMngmtSB implements AdminAccMngmtSBLocal {
         return returnValue;
     }
     
+    /**
+     *
+     * @param newAdminUsr
+     * @return
+     */
+    @Override
+    public boolean createAdmin (AdminUsr newAdminUsr) {
+        //Initialise returnValue type.
+        boolean returnValue = false;
+        
+        //Check if email is taken
+        Query query = em.createQuery("SELECT a FROM AdminUsr a WHERE a.email = :email").setParameter("email", newAdminUsr.getEmail());
+        //If email address is valid, register customer to DB
+        if (query.getResultList().isEmpty()) {
+            AdminUsr toCreate = new AdminUsr();
+            toCreate.setFirstName(newAdminUsr.getFirstName());
+            toCreate.setLastName(newAdminUsr.getLastName());
+            toCreate.setEmail(newAdminUsr.getEmail());
+            toCreate.setPassword(newAdminUsr.getPassword());
+            toCreate.setStatus(false);
+            em.persist(toCreate);     
+            returnValue = true;
+        }
+        
+        return returnValue;
+    }
+    
+    /**
+     *
+     * @param emailAdd
+     * @return
+     */
+    @Override
+    public boolean reActivateAdmin(String emailAdd) {
+        //Initialise returnValue type to return.
+        boolean returnValue = false;
+        
+        //SQL query string to look if email is valid
+        Query query = em.createQuery("SELECT a FROM AdminUsr a WHERE a.email = :email").setParameter("email", emailAdd);
+        //If email address is valid, find customer entity
+        if (query.getResultList().size() == 1) {
+            if (query.getResultList().get(0).getClass().equals(AdminUsr.class)){
+                AdminUsr toActivate = (AdminUsr) query.getResultList().get(0);
+                toActivate.setStatus(true);
+                em.persist(toActivate);
+                /* Or Alternatively
+                em.getTransaction().begin();
+                toActivate.setStatus(true);
+                em.getTransaction().commit(); */
+                returnValue = true;
+            }
+        }
+        
+        return returnValue;
+    }
+    
 }

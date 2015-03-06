@@ -69,5 +69,15 @@ public class AdminAccMngmtWS {
     public List<OrderDetail> viewPurchaseHistoryAdmin(@WebParam(name = "adminID") long adminID, @WebParam(name = "custID") long custID) {
         return ejbRef.viewPurchaseHistoryAdmin(adminID, custID);
     }
+
+    @WebMethod(operationName = "createAdmin")
+    public boolean createAdmin(@WebParam(name = "newAdminUsr") AdminUsr newAdminUsr) {
+        return ejbRef.createAdmin(newAdminUsr);
+    }
+
+    @WebMethod(operationName = "reActivateAdmin")
+    public boolean reActivateAdmin(@WebParam(name = "emailAdd") String emailAdd) {
+        return ejbRef.reActivateAdmin(emailAdd);
+    }
     
 }

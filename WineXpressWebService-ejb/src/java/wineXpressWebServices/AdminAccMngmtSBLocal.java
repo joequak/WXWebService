@@ -36,5 +36,9 @@ public interface AdminAccMngmtSBLocal {
 
     public List<OrderDetail> viewPurchaseHistoryAdmin(long adminID, long custID);
 
+    public boolean createAdmin(AdminUsr newAdminUsr);
+
+    public boolean reActivateAdmin(String emailAdd);
+
     
 }
