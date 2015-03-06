@@ -265,7 +265,7 @@ public class AdminAccMngmtSB implements AdminAccMngmtSBLocal {
             toCreate.setLastName(newAdminUsr.getLastName());
             toCreate.setEmail(newAdminUsr.getEmail());
             toCreate.setPassword(newAdminUsr.getPassword());
-            toCreate.setStatus(false);
+            toCreate.setStatus(true);
             em.persist(toCreate);     
             returnValue = true;
         }
