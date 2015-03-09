@@ -40,7 +40,7 @@ public class AdminUsr implements Serializable {
     private String password;
     
     @Column(name = "status")
-    private Boolean status;
+    private boolean status;
     
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "adminUsr")
     private Collection<Comment> commentCollection;
@@ -137,14 +137,14 @@ public class AdminUsr implements Serializable {
     /**
      * @return the status
      */
-    public Boolean getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(Boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

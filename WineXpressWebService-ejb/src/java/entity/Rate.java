@@ -26,7 +26,7 @@ public class Rate implements Serializable {
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "rate")
-    private Double rate;
+    private double rate;
 
     @ManyToOne
     private Product product;
@@ -70,14 +70,14 @@ public class Rate implements Serializable {
     /**
      * @return the rate
      */
-    public Double getRate() {
+    public double getRate() {
         return rate;
     }
 
     /**
      * @param rate the rate to set
      */
-    public void setRate(Double rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 

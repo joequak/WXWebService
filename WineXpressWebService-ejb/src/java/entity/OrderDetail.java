@@ -33,7 +33,7 @@ public class OrderDetail implements Serializable {
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "totalPrice")
-    private Double totalPrice;
+    private double totalPrice;
 
     @Column(name = "currency", length = 45)
     private String currency;
@@ -54,13 +54,13 @@ public class OrderDetail implements Serializable {
     private String dAddress2;
     
     @Column(name = "priceBeforeDisc")
-    private Double priceBeforeDisc;
+    private double priceBeforeDisc;
     
     @Column(name = "shippingFee")
-    private Double shippingFee;
+    private double shippingFee;
     
     @Column(name = "discountedPrice")
-    private Double discountedPrice;
+    private double discountedPrice;
     
     @Column(name = "dCountry", length = 45)
     private String dCountry;
@@ -157,14 +157,14 @@ public class OrderDetail implements Serializable {
     /**
      * @return the totalPrice
      */
-    public Double getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
     /**
      * @param totalPrice the totalPrice to set
      */
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -255,42 +255,42 @@ public class OrderDetail implements Serializable {
     /**
      * @return the priceBeforeDisc
      */
-    public Double getPriceBeforeDisc() {
+    public double getPriceBeforeDisc() {
         return priceBeforeDisc;
     }
 
     /**
      * @param priceBeforeDisc the priceBeforeDisc to set
      */
-    public void setPriceBeforeDisc(Double priceBeforeDisc) {
+    public void setPriceBeforeDisc(double priceBeforeDisc) {
         this.priceBeforeDisc = priceBeforeDisc;
     }
 
     /**
      * @return the shippingFee
      */
-    public Double getShippingFee() {
+    public double getShippingFee() {
         return shippingFee;
     }
 
     /**
      * @param shippingFee the shippingFee to set
      */
-    public void setShippingFee(Double shippingFee) {
+    public void setShippingFee(double shippingFee) {
         this.shippingFee = shippingFee;
     }
 
     /**
      * @return the discountedPrice
      */
-    public Double getDiscountedPrice() {
+    public double getDiscountedPrice() {
         return discountedPrice;
     }
 
     /**
      * @param discountedPrice the discountedPrice to set
      */
-    public void setDiscountedPrice(Double discountedPrice) {
+    public void setDiscountedPrice(double discountedPrice) {
         this.discountedPrice = discountedPrice;
     }
 

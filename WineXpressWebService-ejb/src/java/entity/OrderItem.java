@@ -25,7 +25,7 @@ public class OrderItem implements Serializable {
     private Long id;
     
     @Column(name = "quantity")
-    private Integer quantity;
+    private int quantity;
     
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "subtotal")
@@ -73,14 +73,14 @@ public class OrderItem implements Serializable {
     /**
      * @return the quantity
      */
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
     /**
      * @param quantity the quantity to set
      */
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
