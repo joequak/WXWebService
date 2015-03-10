@@ -5,9 +5,14 @@
  */
 package wineXpressWebServices;
 
+import entity.CustEnquiry;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,6 +29,28 @@ public class CustSupportSB implements CustSupportSBLocal {
     private EntityManager em;
 
     public CustSupportSB() {
+    }
+    @Override
+    public boolean creatEnquiry(CustEnquiry enquiry){       
+                
+            CustEnquiry newEnquiry = new CustEnquiry();
+            newEnquiry.setEmailAddress(enquiry.getEmailAddress());
+            newEnquiry.setSubject(enquiry.getSubject());
+            newEnquiry.setContent(enquiry.getContent());           
+            //get current timestamp
+            Date date=new Date();
+             newEnquiry.setInDate(new Timestamp(date.getTime()));
+            
+            em.persist(newEnquiry);     
+          
+            return true;
+    
+    }
+    
+    @Override
+    public List<CustEnquiry> getEnquiry() {
+        Query query = em.createQuery("SELECT e FROM CustEnquiry e");
+        return query.getResultList();
     }
     
     

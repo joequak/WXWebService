@@ -5,6 +5,8 @@
  */
 package wineXpressWebServices;
 
+import entity.CustEnquiry;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustSupportSBLocal {
-    
+    public boolean creatEnquiry(CustEnquiry enquiry);
+    public List<CustEnquiry> getEnquiry() ;
 }
