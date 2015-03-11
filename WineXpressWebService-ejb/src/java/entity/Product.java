@@ -58,8 +58,11 @@ public class Product implements Serializable {
     @Column(name = "numberOfRate")
     private int numberOfRate;
     
-    @Column(name = "volumn", length = 45)
-    private String volumn;
+    @Column(name = "volume", length = 45)
+    private String volume;
+    
+    @Column(name = "country", length = 45)
+    private String country;
     
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
     private Collection<Comment> commentCollection;
@@ -219,17 +222,17 @@ public class Product implements Serializable {
     }
 
     /**
-     * @return the volumn
+     * @return the volume
      */
-    public String getVolumn() {
-        return volumn;
+    public String getVolume() {
+        return volume;
     }
 
     /**
-     * @param volumn the volumn to set
+     * @param volume the volume to set
      */
-    public void setVolumn(String volumn) {
-        this.volumn = volumn;
+    public void setVolume(String volume) {
+        this.volume = volume;
     }
 
     /**
@@ -315,5 +318,14 @@ public class Product implements Serializable {
     public void setNumberOfRate(int numberOfRate) {
         this.numberOfRate = numberOfRate;
     }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    
     
 }
