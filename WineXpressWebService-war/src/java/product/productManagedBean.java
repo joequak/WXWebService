@@ -9,7 +9,7 @@ import CategorySessionBean.CategorySessionBeanLocal;
 import ProductSessionBean.ProductSessionBeanLocal;
 import entity.Product;
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
@@ -19,9 +19,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.xml.ws.WebServiceRef;
-import net.webservicex.Country;
+
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -31,9 +29,6 @@ import org.primefaces.event.RowEditEvent;
 @ManagedBean(name = "productManagedBean")
 @ViewScoped
 public class productManagedBean implements Serializable {
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/www.webservicex.net/country.asmx.wsdl")
-    private Country service;
 
     @EJB
     ProductSessionBeanLocal productSB;
@@ -294,25 +289,5 @@ public class productManagedBean implements Serializable {
     }
     
     
-    // webservice to get all the country
-
-    private List<String> getCountries_1() {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        net.webservicex.CountrySoap port = service.getCountrySoap();
-        String s = port.getCountries();
-        s = s.replaceAll("<Name>", "@");
-        s = s.replaceAll("</Name>", "!");
-        String country;
-        List<String> countryList = new ArrayList<>();
-        while (s.contains("@")) {
-            int first = s.indexOf("@");
-            int second = s.indexOf("!");
-            country = s.substring(first + 1, second);
-            countryList.add(country);
-            s = s.substring(second + 1);
-        }
-        return countryList;
-    }
 
 }

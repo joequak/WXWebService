@@ -19,11 +19,11 @@
             <classpath path="${java.home}/../lib/tools.jar:${build.classes.dir}:${j2ee.platform.wsgen.classpath}:${javac.classpath}"/>
         </taskdef>
     </target>
-    <target name="wsgen-CustAccMngmtWS" depends="wsgen-init">
+    <target name="wsgen-RatingProductWS" depends="wsgen-init">
         <copy todir="${build.classes.dir}/META-INF">
-            <fileset dir="${webinf.dir}" includes="wsit-com.wx.accountManagement.CustAccMngmtWS.xml"/>
+            <fileset dir="${webinf.dir}" includes="wsit-rate.RatingProductWS.xml"/>
         </copy>
-        <wsgen sourcedestdir="${build.generated.sources.dir}/jax-ws" resourcedestdir="${build.generated.sources.dir}/jax-ws/resources/" destdir="${build.generated.sources.dir}/jax-ws" verbose="true" keep="true" genwsdl="true" sei="com.wx.accountManagement.CustAccMngmtWS" xendorsed="true">
+        <wsgen sourcedestdir="${build.generated.sources.dir}/jax-ws" resourcedestdir="${build.generated.sources.dir}/jax-ws/resources/" destdir="${build.generated.sources.dir}/jax-ws" verbose="true" keep="true" genwsdl="true" sei="rate.RatingProductWS" xendorsed="true">
             <classpath path="${java.home}/../lib/tools.jar:${build.classes.dir}:${j2ee.platform.wsgen.classpath}:${javac.classpath}"/>
         </wsgen>
     </target>
@@ -35,11 +35,27 @@
             <classpath path="${java.home}/../lib/tools.jar:${build.classes.dir}:${j2ee.platform.wsgen.classpath}:${javac.classpath}"/>
         </wsgen>
     </target>
-    <target name="wsgen-RatingProductWS" depends="wsgen-init">
+    <target name="wsgen-CustAccMngmtWS" depends="wsgen-init">
         <copy todir="${build.classes.dir}/META-INF">
-            <fileset dir="${webinf.dir}" includes="wsit-rate.RatingProductWS.xml"/>
+            <fileset dir="${webinf.dir}" includes="wsit-com.wx.accountManagement.CustAccMngmtWS.xml"/>
         </copy>
-        <wsgen sourcedestdir="${build.generated.sources.dir}/jax-ws" resourcedestdir="${build.generated.sources.dir}/jax-ws/resources/" destdir="${build.generated.sources.dir}/jax-ws" verbose="true" keep="true" genwsdl="true" sei="rate.RatingProductWS" xendorsed="true">
+        <wsgen sourcedestdir="${build.generated.sources.dir}/jax-ws" resourcedestdir="${build.generated.sources.dir}/jax-ws/resources/" destdir="${build.generated.sources.dir}/jax-ws" verbose="true" keep="true" genwsdl="true" sei="com.wx.accountManagement.CustAccMngmtWS" xendorsed="true">
+            <classpath path="${java.home}/../lib/tools.jar:${build.classes.dir}:${j2ee.platform.wsgen.classpath}:${javac.classpath}"/>
+        </wsgen>
+    </target>
+    <target name="wsgen-categoryWS" depends="wsgen-init">
+        <copy todir="${build.classes.dir}/META-INF">
+            <fileset dir="${webinf.dir}" includes="wsit-category.categoryWS.xml"/>
+        </copy>
+        <wsgen sourcedestdir="${build.generated.sources.dir}/jax-ws" resourcedestdir="${build.generated.sources.dir}/jax-ws/resources/" destdir="${build.generated.sources.dir}/jax-ws" verbose="true" keep="true" genwsdl="true" sei="category.categoryWS" xendorsed="true">
+            <classpath path="${java.home}/../lib/tools.jar:${build.classes.dir}:${j2ee.platform.wsgen.classpath}:${javac.classpath}"/>
+        </wsgen>
+    </target>
+    <target name="wsgen-productWS" depends="wsgen-init">
+        <copy todir="${build.classes.dir}/META-INF">
+            <fileset dir="${webinf.dir}" includes="wsit-product.productWS.xml"/>
+        </copy>
+        <wsgen sourcedestdir="${build.generated.sources.dir}/jax-ws" resourcedestdir="${build.generated.sources.dir}/jax-ws/resources/" destdir="${build.generated.sources.dir}/jax-ws" verbose="true" keep="true" genwsdl="true" sei="product.productWS" xendorsed="true">
             <classpath path="${java.home}/../lib/tools.jar:${build.classes.dir}:${j2ee.platform.wsgen.classpath}:${javac.classpath}"/>
         </wsgen>
     </target>
@@ -48,32 +64,4 @@
                 JAX-WS WSIMPORT SECTION
                 ===================
             -->
-    <target name="wsimport-init" depends="init">
-        <fail if="${wsimport.bad.version}" message="WsImport ant task defined in the classpath ${j2ee.platform.wsimport.classpath} has a serious bug. See http://wiki.netbeans.org/MetroIssue for details."/>
-        <mkdir dir="${build.generated.sources.dir}/jax-ws"/>
-        <property name="j2ee.platform.wsimport.classpath" value="${libs.jaxws21.classpath}"/>
-        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
-            <classpath path="${java.home}/../lib/tools.jar:${j2ee.platform.wsimport.classpath}:${javac.classpath}"/>
-        </taskdef>
-        <condition property="conf-dir" value="${conf.dir}/" else="">
-            <isset property="conf.dir"/>
-        </condition>
-    </target>
-    <target name="wsimport-client-country" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/country"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/country" destdir="${build.generated.dir}/jax-wsCache/country" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/country/wsdl/www.webservicex.net/country.asmx.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://www.webservicex.net/country.asmx?WSDL" xnocompile="true" xendorsed="true">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/country/wsdl/www.webservicex.net/country.asmx.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/country"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/country">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-country" depends="-init-project">
-        <delete dir="${build.generated.sources.dir}/jax-ws/net/webservicex"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/country"/>
-    </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-country"/>
 </project>

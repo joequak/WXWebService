@@ -19,7 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.xml.ws.WebServiceRef;
-import net.webservicex.Country;
+
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -30,8 +30,7 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class categoryManagedBean implements Serializable {
 
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/www.webservicex.net/country.asmx.wsdl")
-    private Country service;
+
 
     @EJB
     CategorySessionBeanLocal categorySB;
@@ -172,7 +171,7 @@ public class categoryManagedBean implements Serializable {
     public void setFilteredCategories(List<Categories> filteredCategories) {
         this.filteredCategories = filteredCategories;
     }
-
+/*
     // webservice to get all the country
     private List<String> getCountries_1() {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
@@ -193,5 +192,5 @@ public class categoryManagedBean implements Serializable {
         }
         return countryList;
     }
-
+*/
 }

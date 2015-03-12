@@ -60,6 +60,7 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     
     @Override
     public Product deleteProduct(long productId) {
+        System.out.println("productSessionBean");
         Product product = em.find(Product.class, productId);
         em.remove(product);
         em.flush();
