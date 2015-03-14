@@ -29,9 +29,24 @@ public class CustSupportWS {
         return ejbRef.creatEnquiry(enquiry);
     }
 
-    @WebMethod(operationName = "getEnquiry")
-    public List<CustEnquiry> getEnquiry() {
-        return ejbRef.getEnquiry();
+    @WebMethod(operationName = "getNewEnquiry")
+    public List<CustEnquiry> getNewEnquiry() {
+        return ejbRef.getNewEnquiry();
+    }
+
+    @WebMethod(operationName = "sendResponse")
+    public boolean sendResponse(@WebParam(name = "id") Long id, @WebParam(name = "response") String response) {
+        return ejbRef.sendResponse(id, response);
+    }
+
+    @WebMethod(operationName = "sendEmail")
+    public boolean sendEmail(@WebParam(name = "toEmail") String toEmail, @WebParam(name = "subject") String subject, @WebParam(name = "content") String content) {
+        return ejbRef.sendEmail(toEmail, subject, content);
+    }
+
+    @WebMethod(operationName = "generatePassword")
+    public String generatePassword() {
+        return ejbRef.generatePassword();
     }
     
 }
