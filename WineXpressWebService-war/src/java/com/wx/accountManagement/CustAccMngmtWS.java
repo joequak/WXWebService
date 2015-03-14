@@ -63,5 +63,10 @@ public class CustAccMngmtWS {
     public List<OrderDetail> viewPurchaseHistoryMember(@WebParam(name = "custID") long custID) {
         return ejbRef.viewPurchaseHistoryMember(custID);
     }
+
+    @WebMethod(operationName = "resetPwMember")
+    public boolean resetPwMember(@WebParam(name = "emailAdd") String emailAdd, @WebParam(name = "rstPW") String rstPW) {
+        return ejbRef.resetPwMember(emailAdd, rstPW);
+    }
     
 }

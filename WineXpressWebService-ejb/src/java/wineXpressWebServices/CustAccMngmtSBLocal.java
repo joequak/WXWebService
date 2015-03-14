@@ -32,5 +32,7 @@ public interface CustAccMngmtSBLocal {
     public boolean changePwMember(long custID, String oldPW, String newPW);
 
     public List<OrderDetail> viewPurchaseHistoryMember(long custID);
+
+    public boolean resetPwMember(String emailAdd, String rstPW);
     
 }

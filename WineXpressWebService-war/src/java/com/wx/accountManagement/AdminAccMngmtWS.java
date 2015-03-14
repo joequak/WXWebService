@@ -79,5 +79,10 @@ public class AdminAccMngmtWS {
     public boolean reActivateAdmin(@WebParam(name = "emailAdd") String emailAdd) {
         return ejbRef.reActivateAdmin(emailAdd);
     }
+
+    @WebMethod(operationName = "resetPwAdmin")
+    public boolean resetPwAdmin(@WebParam(name = "emailAdd") String emailAdd, @WebParam(name = "rstPW") String rstPW) {
+        return ejbRef.resetPwAdmin(emailAdd, rstPW);
+    }
     
 }

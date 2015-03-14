@@ -302,4 +302,36 @@ public class AdminAccMngmtSB implements AdminAccMngmtSBLocal {
         return returnValue;
     }
     
+    /**
+     *
+     * @param emailAdd
+     * @param rstPW
+     * @return
+     */
+    @Override
+    public boolean resetPwAdmin (String emailAdd, String rstPW) {
+         //Initialise returnValue type to return.
+        boolean returnValue = false;
+        
+        //SQL query string to look if email is valid
+        Query query = em.createQuery("SELECT a FROM AdminUsr a WHERE a.email = :email").setParameter("email", emailAdd);
+        //If email address is valid, find customer entity
+        if (query.getResultList().size() == 1) {
+            if (query.getResultList().get(0).getClass().equals(AdminUsr.class)){
+                AdminUsr toRestPW = (AdminUsr) query.getResultList().get(0);
+                toRestPW.setPassword(rstPW);
+                em.persist(toRestPW);
+                /* Or Alternatively
+                em.getTransaction().begin();
+                toActivate.setStatus(true);
+                em.getTransaction().commit(); */
+                returnValue = true;
+            }
+        }
+        
+        return returnValue;
+    }
+    
+
+    
 }

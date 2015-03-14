@@ -40,5 +40,7 @@ public interface AdminAccMngmtSBLocal {
 
     public boolean reActivateAdmin(String emailAdd);
 
+    public boolean resetPwAdmin(String emailAdd, String rstPW);
+
     
 }

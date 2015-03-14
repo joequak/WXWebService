@@ -219,5 +219,34 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         return returnValue;
     }
     
+    /**
+     *
+     * @param emailAdd
+     * @param rstPW
+     * @return
+     */
+    @Override
+    public boolean resetPwMember (String emailAdd, String rstPW) {
+        //Initialise returnValue type to return.
+        boolean returnValue = false;
+        
+        //SQL query string to look if email is valid
+        Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email").setParameter("email", emailAdd);
+        //If email address is valid, find customer entity
+        if (query.getResultList().size() == 1) {
+            if (query.getResultList().get(0).getClass().equals(Customer.class)){
+                Customer toRestPW = (Customer) query.getResultList().get(0);
+                toRestPW.setPassword(rstPW);
+                em.persist(toRestPW);
+                /* Or Alternatively
+                em.getTransaction().begin();
+                toActivate.setStatus(true);
+                em.getTransaction().commit(); */
+                returnValue = true;
+            }
+        }
+        
+        return returnValue;
+    }
     
 }
