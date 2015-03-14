@@ -101,5 +101,13 @@ public class CustSupportSB implements CustSupportSBLocal {
 
         return password;
     }
+    
+    @Override
+    public List<CustEnquiry> getRepliedEnquiry() {
+
+        Query query = em.createQuery("SELECT e FROM CustEnquiry e WHERE e.reply != :out").setParameter("out", "0");
+
+        return query.getResultList();
+    }
 
 }

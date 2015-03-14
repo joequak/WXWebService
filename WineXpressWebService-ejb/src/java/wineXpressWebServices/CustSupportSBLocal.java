@@ -25,4 +25,6 @@ public interface CustSupportSBLocal {
     public boolean sendEmail(String toEmail, String subject, String content);
 
     public String generatePassword();
+    
+     public List<CustEnquiry> getRepliedEnquiry() ;
 }

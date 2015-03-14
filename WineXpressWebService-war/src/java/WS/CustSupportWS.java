@@ -48,5 +48,10 @@ public class CustSupportWS {
     public String generatePassword() {
         return ejbRef.generatePassword();
     }
+
+    @WebMethod(operationName = "getRepliedEnquiry")
+    public List<CustEnquiry> getRepliedEnquiry() {
+        return ejbRef.getRepliedEnquiry();
+    }
     
 }
