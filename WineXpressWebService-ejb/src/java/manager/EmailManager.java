@@ -61,4 +61,40 @@ public class EmailManager {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    public void sendResponse(String toEmail, String subject, String content) {
+        //set toEmail address
+    this.setToEmialAddress(toEmail);
+
+        try {
+            Properties props = new Properties();
+            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.smtp.host", emailServerName);
+            props.put("mail.smtp.port", "25");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.debug", "true");
+            javax.mail.Authenticator auth = new SMTPAuthenticator();
+            Session session = Session.getInstance(props, auth);
+            session.setDebug(true);
+            Message msg = new MimeMessage(session);
+            if (msg != null) {
+                msg.setFrom(InternetAddress.parse(emailFromAddress, false)[0]);
+                msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress, false));
+                msg.setSubject(subject);
+                String messageText =content;
+
+                msg.setText(messageText);
+                msg.setHeader("X-Mailer", mailer);
+                Date timeStamp = new Date();
+                msg.setSentDate(timeStamp);
+                Transport.send(msg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    
 }

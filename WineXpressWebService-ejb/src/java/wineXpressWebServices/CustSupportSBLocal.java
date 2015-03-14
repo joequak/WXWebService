@@ -15,6 +15,14 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustSupportSBLocal {
+
     public boolean creatEnquiry(CustEnquiry enquiry);
-    public List<CustEnquiry> getEnquiry() ;
+
+    public List<CustEnquiry> getNewEnquiry();
+
+    public boolean sendResponse(Long id, String response);
+
+    public boolean sendEmail(String toEmail, String subject, String content);
+
+    public String generatePassword();
 }
