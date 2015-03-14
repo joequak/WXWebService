@@ -26,7 +26,9 @@ public class Comment implements Serializable {
     
     @Column(name = "comment", length = 1000)
     private String comment;
-    
+    @Column(name = "status")
+    private boolean status;
+     
     @ManyToOne
     private Product product;
     
@@ -123,6 +125,14 @@ public class Comment implements Serializable {
      */
     public void setAdminUsr(AdminUsr adminUsr) {
         this.adminUsr = adminUsr;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
     
 }

@@ -13,5 +13,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface CatalogueMngmtSBLocal {
-    
+
+    Boolean addNewCategory(String name);
+
+    Boolean addNewSubCategori(String cateoryName, String newSubName);
+
+
 }
