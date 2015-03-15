@@ -40,7 +40,7 @@ public interface ProductSessionBeanLocal {
 
     public void deleteComment(Comment myComment);
 
-   // public Customer findCustomerById(long cusId);
+   public Customer findCustomerById(long cusId);
 
     public void dataBaseInit();
 

@@ -189,9 +189,10 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         em.merge(myComment);
     }
 
-//    @Override
-//    public Customer findCustomerById(long cusId) {
-//        Customer myCus = em.find(Customer.class, cusId);
-//        return myCus;
-//    }
+    @Override
+    public Customer findCustomerById(long cusId) {
+      
+        Customer myCus = (Customer) em.find(Customer.class, cusId);
+        return myCus;
+    }
 }
