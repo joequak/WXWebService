@@ -31,43 +31,57 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     public ProductSessionBean() {
     }
 
-//    @Override
-//    public void dataBaseInit() {
-//        System.out.println("*************************set database*******");
-//        Categories newCat = new Categories();
-//        newCat.setName("Country");
-//        em.persist(newCat);
-//        
-//        SubCategories newSub = new SubCategories();
-//        newSub.setName("France");
-//        newSub.setProductCollection(new ArrayList());
-//        em.persist(newSub);
-//        
-//        newCat.getSubCategoriesCollection().add(newSub);
-//        em.merge(newCat);
-//        
-//        Product newPro = new Product();
-//        newPro.setAvailableQuantity(134);
-//        newPro.setAverageRate(4.5);
-//        newPro.setCommentCollection(new ArrayList());
-//        newPro.setCost(35);
-//        newPro.setDiscount(10);
-//        newPro.setName("Vado");
-//        newPro.setNumberOfRate(23);
-//        newPro.setOrderItemCollection(new ArrayList());
-//        newPro.setPicture("");
-//        newPro.setPrice(34);
-//        newPro.setRateCollection(new ArrayList());
-//        newPro.setSoldQuantity(12);
-//        newPro.setVolumn("1l");
-//        newPro.setDescription("Valdo has two wineries locate over a 20,000 sqm surface area: the first winery is headqund is synonymous with excellence in sparkling wine culture where tradition meets innovation.");
-//        em.persist(newPro);
-//        
-//        newSub.getProductCollection().add(newPro);
-//        em.merge(newSub);
-//    }
+    @Override
+    public void dataBaseInit() {
+        Categories newCat = new Categories();
+        newCat.setName("Origin");
+        em.persist(newCat);
 
-    public long saveNewProduct(String picture,String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
+        SubCategories newSub1 = new SubCategories();
+        newSub1.setName("France");
+        newSub1.setProductCollection(new ArrayList());
+        em.persist(newSub1);
+        SubCategories newSub2 = new SubCategories();
+        newSub2.setName("Italy");
+        newSub2.setProductCollection(new ArrayList());
+        em.persist(newSub2);
+        SubCategories newSub3 = new SubCategories();
+        newSub3.setName("Australia");
+        newSub3.setProductCollection(new ArrayList());
+        em.persist(newSub3);
+        SubCategories newSub4 = new SubCategories();
+        newSub4.setName("Grace");
+        newSub4.setProductCollection(new ArrayList());
+        em.persist(newSub4);
+
+        newCat.getSubCategoriesCollection().add(newSub1);
+        newCat.getSubCategoriesCollection().add(newSub2);
+        newCat.getSubCategoriesCollection().add(newSub3);
+        newCat.getSubCategoriesCollection().add(newSub4);
+        em.merge(newCat);
+
+        Product newPro = new Product();
+        newPro.setAvailableQuantity(134);
+        newPro.setAverageRate(4.5);
+        newPro.setCommentCollection(new ArrayList());
+        newPro.setCost(35);
+        newPro.setDiscount(10);
+        newPro.setName("Vado");
+        newPro.setNumberOfRate(23);
+        newPro.setOrderItemCollection(new ArrayList());
+        newPro.setPicture("");
+        newPro.setPrice(34);
+        newPro.setRateCollection(new ArrayList());
+        newPro.setSoldQuantity(12);
+        newPro.setVolumn("1l");
+        newPro.setDescription("Valdo has two wineries locate over a 20,000 sqm surface area: the first winery is headqund is synonymous with excellence in sparkling wine culture where tradition meets innovation.");
+        em.persist(newPro);
+
+        newSub1.getProductCollection().add(newPro);
+        em.merge(newSub1);
+    }
+
+    public long saveNewProduct(String picture, String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
         Product product = new Product();
         product.setPicture(picture);
         product.setName(productName);

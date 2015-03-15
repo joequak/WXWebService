@@ -42,6 +42,6 @@ public interface ProductSessionBeanLocal {
 
    // public Customer findCustomerById(long cusId);
 
-    //public void dataBaseInit();
+    public void dataBaseInit();
 
     }
