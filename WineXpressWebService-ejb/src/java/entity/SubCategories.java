@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,8 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 /**
  *
@@ -30,11 +31,9 @@ public class SubCategories implements Serializable {
     @Column(name = "name", length = 100)
     private String name;
     
-    @ManyToOne
-    private Categories categories;
-    
-    @ManyToMany (cascade = {CascadeType.ALL}, mappedBy = "subCategoriesCollection")
-    private Collection<Product> productCollection;
+    @ManyToMany (cascade = {CascadeType.ALL})
+    @JoinTable(name="SubCategories_Product")
+    private Collection<Product> productCollection = new ArrayList();
 
     public Long getId() {
         return id;
@@ -83,19 +82,6 @@ public class SubCategories implements Serializable {
         this.name = name;
     }
 
-    /**
-     * @return the categories
-     */
-    public Categories getCategories() {
-        return categories;
-    }
-
-    /**
-     * @param categories the categories to set
-     */
-    public void setCategories(Categories categories) {
-        this.categories = categories;
-    }
 
     /**
      * @return the productCollection

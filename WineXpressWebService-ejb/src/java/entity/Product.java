@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -44,10 +44,10 @@ public class Product implements Serializable {
     private int availableQuantity;
     
     @Column(name = "soldQuantity")
-    private int soldQuantity;
+    private int soldQuantity=0;
     
     @Column(name = "averageRate")
-    private double averageRate;
+    private double averageRate=0;
     
     @Column(name = "picture", length = 500)
     private String picture;
@@ -56,20 +56,17 @@ public class Product implements Serializable {
     private int discount;
     
     @Column(name = "numberOfRate")
-    private int numberOfRate;
+    private int numberOfRate=0;
     
     @Column(name = "volumn", length = 45)
     private String volumn;
     
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
-    private Collection<Comment> commentCollection;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Collection<Comment> commentCollection = new ArrayList();
     
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
-    private Collection<Rate> rateCollection;
-    
-    @ManyToMany(cascade = {CascadeType.ALL})
-    private Collection<SubCategories> subCategoriesCollection;
-    
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Collection<Rate> rateCollection = new ArrayList();
+ 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
     private Collection<OrderItem> orderItemCollection;
 
@@ -258,20 +255,6 @@ public class Product implements Serializable {
      */
     public void setRateCollection(Collection<Rate> rateCollection) {
         this.rateCollection = rateCollection;
-    }
-
-    /**
-     * @return the subCategoriesCollection
-     */
-    public Collection<SubCategories> getSubCategoriesCollection() {
-        return subCategoriesCollection;
-    }
-
-    /**
-     * @param subCategoriesCollection the subCategoriesCollection to set
-     */
-    public void setSubCategoriesCollection(Collection<SubCategories> subCategoriesCollection) {
-        this.subCategoriesCollection = subCategoriesCollection;
     }
 
     /**
