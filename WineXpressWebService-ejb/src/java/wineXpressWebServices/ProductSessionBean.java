@@ -5,7 +5,13 @@
  */
 package wineXpressWebServices;
 
+import entity.Categories;
+import entity.Comment;
+import entity.Customer;
 import entity.Product;
+import entity.Rate;
+import entity.SubCategories;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,26 +24,62 @@ import javax.persistence.Query;
  */
 @Stateless
 public class ProductSessionBean implements ProductSessionBeanLocal {
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     public ProductSessionBean() {
     }
-    
-    @Override
-    public long saveNewProduct(String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount) {
+
+//    @Override
+//    public void dataBaseInit() {
+//        System.out.println("*************************set database*******");
+//        Categories newCat = new Categories();
+//        newCat.setName("Country");
+//        em.persist(newCat);
+//        
+//        SubCategories newSub = new SubCategories();
+//        newSub.setName("France");
+//        newSub.setProductCollection(new ArrayList());
+//        em.persist(newSub);
+//        
+//        newCat.getSubCategoriesCollection().add(newSub);
+//        em.merge(newCat);
+//        
+//        Product newPro = new Product();
+//        newPro.setAvailableQuantity(134);
+//        newPro.setAverageRate(4.5);
+//        newPro.setCommentCollection(new ArrayList());
+//        newPro.setCost(35);
+//        newPro.setDiscount(10);
+//        newPro.setName("Vado");
+//        newPro.setNumberOfRate(23);
+//        newPro.setOrderItemCollection(new ArrayList());
+//        newPro.setPicture("");
+//        newPro.setPrice(34);
+//        newPro.setRateCollection(new ArrayList());
+//        newPro.setSoldQuantity(12);
+//        newPro.setVolumn("1l");
+//        newPro.setDescription("Valdo has two wineries locate over a 20,000 sqm surface area: the first winery is headqund is synonymous with excellence in sparkling wine culture where tradition meets innovation.");
+//        em.persist(newPro);
+//        
+//        newSub.getProductCollection().add(newPro);
+//        em.merge(newSub);
+//    }
+
+    public long saveNewProduct(String picture,String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
         Product product = new Product();
+        product.setPicture(picture);
         product.setName(productName);
         product.setPrice(productPrice);
         product.setCost(productCost);
         product.setDescription(productDescription);
         product.setAvailableQuantity(productAQ);
-        product.setSoldQuantity(0);
-        product.setAverageRate(0);
         product.setDiscount(productDiscount);
         product.setNumberOfRate(0);
+        product.setVolumn(productVolume);
         em.persist(product);
+
         return product.getId();
     }
 
@@ -49,22 +91,23 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         query.setParameter("pName", productName);
         return query.getResultList();
     }
-    
+
     @Override
     public List<Product> viewAllProducts() {
-        Query query = em.createQuery("select p from Product p");
+        Query query = em.createQuery("SELECT p FROM Product p");
         return query.getResultList();
     }
-    
+
     @Override
     public Product deleteProduct(long productId) {
         System.out.println("productSessionBean");
+        //delete product from sub categories!!!!!!****************************
         Product product = em.find(Product.class, productId);
         em.remove(product);
         em.flush();
         return product;
     }
-    
+
     @Override
     public void editProduct(Product newProduct) {
         Product origin = em.find(Product.class, newProduct.getId());
@@ -75,6 +118,66 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         origin.setDescription(newProduct.getDescription());
         origin.setDiscount(newProduct.getDiscount());
         em.persist(origin);
-        
+
     }
+
+    @Override
+    public List<Categories> getAllCategories() {
+        ArrayList<Categories> result = new ArrayList();
+        Query q = em.createQuery("SELECT c FROM Categories c");
+        for (Object o : q.getResultList()) {
+            result.add((Categories) o);
+        }
+        return result;
+    }
+
+    @Override
+    public SubCategories findSubCategoryByName(String name) {
+        Query q = em.createQuery("SELECT c FROM SubCategories c WHERE c.name= :name");
+        q.setParameter("name", name);
+        SubCategories result = (SubCategories) q.getSingleResult();
+
+        return result;
+    }
+
+    @Override
+    public void rateProduct(Customer cus, Product myProduct, int myRate) {
+        Rate newRate = new Rate();
+        newRate.setRate(myRate);
+        em.persist(newRate);
+        cus.getRateCollection().add(newRate);
+        em.merge(cus);
+        int numOfRates = myProduct.getRateCollection().size();
+        double totalRates = myProduct.getAverageRate() * numOfRates;
+        myProduct.getRateCollection().add(newRate);
+        double newAver = (totalRates + myRate) / (numOfRates + 1);
+        myProduct.setAverageRate(newAver);
+        em.merge(myProduct);
+        em.flush();
+    }
+
+    @Override
+    public void makeComment(Product myProduct, String newComment, Customer cus) {
+        Comment newCom = new Comment();
+        newCom.setComment(newComment);
+        newCom.setStatus(true);
+        em.persist(newCom);
+        myProduct.getCommentCollection().add(newCom);
+        cus.getCommentCollection().add(newCom);
+        em.merge(myProduct);
+        em.merge(cus);
+
+    }
+
+    @Override
+    public void deleteComment(Comment myComment) {
+        myComment.setStatus(false);
+        em.merge(myComment);
+    }
+
+//    @Override
+//    public Customer findCustomerById(long cusId) {
+//        Customer myCus = em.find(Customer.class, cusId);
+//        return myCus;
+//    }
 }

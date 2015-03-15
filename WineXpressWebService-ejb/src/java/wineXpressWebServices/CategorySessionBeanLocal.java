@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package CategorySessionBean;
+package wineXpressWebServices;
 
 import entity.Categories;
 import java.util.List;
@@ -21,6 +21,7 @@ public interface CategorySessionBeanLocal {
      public List<Categories> viewAllCategories();
      public Categories deleteCategories(long categoriesId);
      public void editCategories(Categories newCategories);
-     public List<String> getCountries();
+     public List<String> getCategoriesName();
+     public List<String> getSubCategoryNameList(String categoryName);
 }
 

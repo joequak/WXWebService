@@ -28,12 +28,6 @@ public class Rate implements Serializable {
     @Column(name = "rate")
     private Integer rate;
 
-    @ManyToOne
-    private Product product;
-    
-    @ManyToOne
-    private Customer customer;
-
     public Long getId() {
         return id;
     }
@@ -81,32 +75,5 @@ public class Rate implements Serializable {
         this.rate = rate;
     }
 
-    /**
-     * @return the product
-     */
-    public Product getProduct() {
-        return product;
-    }
-
-    /**
-     * @param product the product to set
-     */
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    /**
-     * @return the customer
-     */
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    /**
-     * @param customer the customer to set
-     */
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
     
 }

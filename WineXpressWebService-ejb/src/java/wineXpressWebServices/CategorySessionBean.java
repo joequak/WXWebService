@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package CategorySessionBean;
+package wineXpressWebServices;
 
 import entity.Categories;
+import entity.SubCategories;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -28,14 +29,17 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
 
     @Override
     public long saveNewCategories(String categoryName) {
+
         Query query = em.createQuery("select c from Categories c where c.name=:cName");
         query.setParameter("cName", categoryName);
         if(!query.getResultList().isEmpty()){
+            System.out.println("Categories added failed, because category :"+categoryName +" already existed in Database");
             return -2l;
         }else{
         Categories category = new Categories();
         category.setName(categoryName);
         em.persist(category);
+        em.flush();
         return category.getId();
         }
     }
@@ -52,7 +56,8 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     @Override
     public List<Categories> viewAllCategories() {
         Query query = em.createQuery("select p from Categories p");
-        return query.getResultList();
+        List<Categories> returnList = new ArrayList<>();
+        return returnList;
     }
 
     @Override
@@ -72,6 +77,19 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     }
     
     @Override
+    public List<String> getCategoriesName(){
+        List<String> categoriesName = new ArrayList<>();
+        categoriesName.clear();
+        Query q = em.createQuery("select c from Categories c");
+        for(Object o: q.getResultList()){
+            Categories category = (Categories)o;
+            categoriesName.add(category.getName());
+        }
+        return categoriesName;
+    }
+    
+  /*  
+    @Override
     public List<String> getCountries(){
         List<String> countries = new ArrayList<>();
         countries.clear();
@@ -81,5 +99,23 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
             countries.add(category.getName());      
         }
         return countries;
+    }
+*/
+    @Override
+    public List<String> getSubCategoryNameList(String categoryName) {
+        List<String> subCategoryList = new ArrayList<>();
+        subCategoryList.clear();
+        Query q = em.createQuery("select c from Categories c where c.name=:categoryName");
+        q.setParameter("categoryName", categoryName);
+        if(q.getResultList().isEmpty()){
+             return subCategoryList;
+        }else{
+        Categories cs = (Categories)q.getResultList().get(0);
+        for(Object o:cs.getSubCategoriesCollection()){
+            SubCategories sc = (SubCategories)o;
+            subCategoryList.add(sc.getName());
+        }
+        return subCategoryList;
+        }
     }
 }

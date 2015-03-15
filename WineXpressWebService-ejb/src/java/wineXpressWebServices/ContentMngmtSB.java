@@ -32,8 +32,6 @@ public class ContentMngmtSB implements ContentMngmtSBLocal {
     @Override
     public void rateProduct(Customer cus, Product myProduct, int myRate) {
         Rate newRate = new Rate();
-        newRate.setCustomer(cus);
-        newRate.setProduct(myProduct);
         newRate.setRate(myRate);
         em.persist(newRate);
         cus.getRateCollection().add(newRate);
@@ -51,8 +49,6 @@ public class ContentMngmtSB implements ContentMngmtSBLocal {
     public void makeComment(Product myProduct, String newComment, Customer cus) {
         Comment newCom = new Comment();
         newCom.setComment(newComment);
-        newCom.setCustomer(cus);
-        newCom.setProduct(myProduct);
         newCom.setStatus(true);
         em.persist(newCom);
         myProduct.getCommentCollection().add(newCom);
@@ -67,6 +63,5 @@ public class ContentMngmtSB implements ContentMngmtSBLocal {
         myComment.setStatus(false);
         em.merge(myComment);
     }
-    
 
 }

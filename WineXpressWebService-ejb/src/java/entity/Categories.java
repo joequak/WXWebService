@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,8 +30,8 @@ public class Categories implements Serializable {
     @Column(name = "name", length = 100)
     private String name;
     
-    @OneToMany (cascade = {CascadeType.ALL}, mappedBy = "categories")
-    private Collection<SubCategories> subCategoriesCollection;
+    @OneToMany (cascade={CascadeType.PERSIST})
+    private Collection<SubCategories> subCategoriesCollection = new ArrayList();
 
     public Long getId() {
         return id;

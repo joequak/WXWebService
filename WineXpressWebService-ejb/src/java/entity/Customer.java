@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,8 +50,8 @@ public class Customer implements Serializable {
     @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCollection")
     private Collection<BillToAddress> billToAdressCollection;
     
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customer")
-    private Collection<Comment> commentCollection;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Collection<Comment> commentCollection = new ArrayList();
     
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customer")
     private Collection<OrderDetail> orderDetailCollection;
@@ -58,8 +59,8 @@ public class Customer implements Serializable {
     @ManyToMany(cascade = {CascadeType.ALL})
     private Collection<CreditCard> creditCardCollection;
     
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customer")
-    private Collection<Rate> rateCollection;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Collection<Rate> rateCollection = new ArrayList();
 
     public Long getId() {
         return id;

@@ -29,11 +29,6 @@ public class Comment implements Serializable {
     @Column(name = "status")
     private boolean status;
      
-    @ManyToOne
-    private Product product;
-    
-    @ManyToOne
-    private Customer customer;
     
     @ManyToOne
     private AdminUsr adminUsr;
@@ -85,33 +80,6 @@ public class Comment implements Serializable {
         this.comment = comment;
     }
 
-    /**
-     * @return the product
-     */
-    public Product getProduct() {
-        return product;
-    }
-
-    /**
-     * @param product the product to set
-     */
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    /**
-     * @return the customer
-     */
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    /**
-     * @param customer the customer to set
-     */
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     /**
      * @return the adminUsr
