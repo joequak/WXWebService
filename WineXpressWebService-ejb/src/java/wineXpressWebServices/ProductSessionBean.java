@@ -63,6 +63,7 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         Product newPro = new Product();
         newPro.setAvailableQuantity(134);
         newPro.setAverageRate(4.5);
+        newPro.setPicture("./../images/productImg/wine_1.png");
         newPro.setCommentCollection(new ArrayList());
         newPro.setCost(35);
         newPro.setDiscount(10);
@@ -74,6 +75,7 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         newPro.setRateCollection(new ArrayList());
         newPro.setSoldQuantity(12);
         newPro.setVolumn("1l");
+        newPro.setStatus(1);
         newPro.setDescription("Valdo has two wineries locate over a 20,000 sqm surface area: the first winery is headqund is synonymous with excellence in sparkling wine culture where tradition meets innovation.");
         em.persist(newPro);
 
@@ -82,8 +84,9 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     }
 
     public long saveNewProduct(String picture, String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
+        String newUrl = "./../images/productImg/" + picture;
         Product product = new Product();
-        product.setPicture(picture);
+        product.setPicture(newUrl);
         product.setName(productName);
         product.setPrice(productPrice);
         product.setCost(productCost);
@@ -93,7 +96,6 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         product.setNumberOfRate(0);
         product.setVolumn(productVolume);
         em.persist(product);
-
         return product.getId();
     }
 
@@ -115,9 +117,9 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     @Override
     public Product deleteProduct(long productId) {
         System.out.println("productSessionBean");
-        //delete product from sub categories!!!!!!****************************
         Product product = em.find(Product.class, productId);
-        em.remove(product);
+        product.setStatus(0);
+        em.persist(product);
         em.flush();
         return product;
     }

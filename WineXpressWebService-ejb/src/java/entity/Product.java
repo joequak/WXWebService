@@ -22,51 +22,55 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Product implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @Column(name = "name", length = 200)
     private String name;
-    
+
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private double price;
-    
+
     @Column(name = "cost")
     private double cost;
-    
+
     @Column(name = "description", length = 1000)
     private String description;
-    
+
     @Column(name = "availableQuantity")
     private int availableQuantity;
-    
+
     @Column(name = "soldQuantity")
-    private int soldQuantity=0;
-    
+    private int soldQuantity = 0;
+
     @Column(name = "averageRate")
-    private double averageRate=0;
-    
+    private double averageRate = 0;
+
     @Column(name = "picture", length = 500)
     private String picture;
-    
+
     @Column(name = "discount")
     private int discount;
-    
+
     @Column(name = "numberOfRate")
-    private int numberOfRate=0;
-    
+    private int numberOfRate = 0;
+
     @Column(name = "volumn", length = 45)
     private String volumn;
-    
+
+    @Column(name = "status")
+    private int status =1;
+
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Comment> commentCollection = new ArrayList();
-    
+
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Rate> rateCollection = new ArrayList();
- 
+
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
     private Collection<OrderItem> orderItemCollection;
 
@@ -298,5 +302,13 @@ public class Product implements Serializable {
     public void setNumberOfRate(int numberOfRate) {
         this.numberOfRate = numberOfRate;
     }
-    
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 }

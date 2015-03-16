@@ -32,15 +32,15 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
 
         Query query = em.createQuery("select c from Categories c where c.name=:cName");
         query.setParameter("cName", categoryName);
-        if(!query.getResultList().isEmpty()){
-            System.out.println("Categories added failed, because category :"+categoryName +" already existed in Database");
+        if (!query.getResultList().isEmpty()) {
+            System.out.println("Categories added failed, because category :" + categoryName + " already existed in Database");
             return -2l;
-        }else{
-        Categories category = new Categories();
-        category.setName(categoryName);
-        em.persist(category);
-        em.flush();
-        return category.getId();
+        } else {
+            Categories category = new Categories();
+            category.setName(categoryName);
+            em.persist(category);
+            em.flush();
+            return category.getId();
         }
     }
 
@@ -61,11 +61,16 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     }
 
     @Override
-    public Categories deleteCategories(long categoryId) {
+    public boolean deleteCategories(long categoryId) {
+        boolean result = false;
         Categories category = em.find(Categories.class, categoryId);
-        em.remove(category);
-        em.flush();
-        return category;
+        if (category.getSubCategoriesCollection().isEmpty()) {
+            em.remove(category);
+            em.flush();
+            result=true;
+        }
+
+        return result;
     }
 
     @Override
@@ -75,47 +80,34 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         em.persist(origin);
 
     }
-    
+
     @Override
-    public List<String> getCategoriesName(){
+    public List<String> getCategoriesName() {
         List<String> categoriesName = new ArrayList<>();
         categoriesName.clear();
         Query q = em.createQuery("select c from Categories c");
-        for(Object o: q.getResultList()){
-            Categories category = (Categories)o;
+        for (Object o : q.getResultList()) {
+            Categories category = (Categories) o;
             categoriesName.add(category.getName());
         }
         return categoriesName;
     }
-    
-  /*  
-    @Override
-    public List<String> getCountries(){
-        List<String> countries = new ArrayList<>();
-        countries.clear();
-        Query q = em.createQuery("select c from Categories c");
-        for(Object o : q.getResultList()){
-            Categories category = (Categories)o;
-            countries.add(category.getName());      
-        }
-        return countries;
-    }
-*/
+
     @Override
     public List<String> getSubCategoryNameList(String categoryName) {
         List<String> subCategoryList = new ArrayList<>();
         subCategoryList.clear();
         Query q = em.createQuery("select c from Categories c where c.name=:categoryName");
         q.setParameter("categoryName", categoryName);
-        if(q.getResultList().isEmpty()){
-             return subCategoryList;
-        }else{
-        Categories cs = (Categories)q.getResultList().get(0);
-        for(Object o:cs.getSubCategoriesCollection()){
-            SubCategories sc = (SubCategories)o;
-            subCategoryList.add(sc.getName());
-        }
-        return subCategoryList;
+        if (q.getResultList().isEmpty()) {
+            return subCategoryList;
+        } else {
+            Categories cs = (Categories) q.getResultList().get(0);
+            for (Object o : cs.getSubCategoriesCollection()) {
+                SubCategories sc = (SubCategories) o;
+                subCategoryList.add(sc.getName());
+            }
+            return subCategoryList;
         }
     }
 }

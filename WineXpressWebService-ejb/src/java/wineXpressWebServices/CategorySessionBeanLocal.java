@@ -19,7 +19,7 @@ public interface CategorySessionBeanLocal {
      public long saveNewCategories(String categoriesName);
      public List<Categories> searchCategories(String categoriesName);
      public List<Categories> viewAllCategories();
-     public Categories deleteCategories(long categoriesId);
+    public boolean deleteCategories(long categoryId);
      public void editCategories(Categories newCategories);
      public List<String> getCategoriesName();
      public List<String> getSubCategoryNameList(String categoryName);

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package wineXpressWebServices;
 
+import entity.Categories;
+import entity.SubCategories;
 import javax.ejb.Local;
 
 /**
@@ -14,5 +15,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface SubCategorySessionBeanLocal {
-     public long saveSubCategories(String categoryName, String subcategoriesName);
+
+    public boolean addNewSubcategory(Categories category, String subName);
+
+    public boolean deleteSubCategory(SubCategories mySub);
 }
