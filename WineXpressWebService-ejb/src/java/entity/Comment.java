@@ -26,12 +26,8 @@ public class Comment implements Serializable {
     
     @Column(name = "comment", length = 1000)
     private String comment;
-    @Column(name = "status")
-    private boolean status;
-     
     
-    @ManyToOne
-    private AdminUsr adminUsr;
+    private boolean cStatus;
 
     public Long getId() {
         return id;
@@ -80,27 +76,18 @@ public class Comment implements Serializable {
         this.comment = comment;
     }
 
+    /**
+     * @return the cStatus
+     */
+    public boolean iscStatus() {
+        return cStatus;
+    }
 
     /**
-     * @return the adminUsr
+     * @param cStatus the cStatus to set
      */
-    public AdminUsr getAdminUsr() {
-        return adminUsr;
-    }
-
-    /**
-     * @param adminUsr the adminUsr to set
-     */
-    public void setAdminUsr(AdminUsr adminUsr) {
-        this.adminUsr = adminUsr;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setcStatus(boolean cStatus) {
+        this.cStatus = cStatus;
     }
     
 }

@@ -51,7 +51,7 @@ public class Customer implements Serializable {
     private Collection<BillToAddress> billToAdressCollection;
     
     @OneToMany(cascade = {CascadeType.ALL})
-    private Collection<Comment> commentCollection = new ArrayList();
+    private Collection<Comment> commentCollection;
     
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customer")
     private Collection<OrderDetail> orderDetailCollection;
@@ -60,7 +60,7 @@ public class Customer implements Serializable {
     private Collection<CreditCard> creditCardCollection;
     
     @OneToMany(cascade = {CascadeType.ALL})
-    private Collection<Rate> rateCollection = new ArrayList();
+    private Collection<Rate> rateCollection;
 
     public Long getId() {
         return id;

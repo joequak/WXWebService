@@ -41,9 +41,6 @@ public class AdminUsr implements Serializable {
     
     @Column(name = "status")
     private boolean status;
-    
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "adminUsr")
-    private Collection<Comment> commentCollection;
 
     public Long getId() {
         return id;
@@ -148,18 +145,5 @@ public class AdminUsr implements Serializable {
         this.status = status;
     }
 
-    /**
-     * @return the commentCollection
-     */
-    public Collection<Comment> getCommentCollection() {
-        return commentCollection;
-    }
-
-    /**
-     * @param commentCollection the commentCollection to set
-     */
-    public void setCommentCollection(Collection<Comment> commentCollection) {
-        this.commentCollection = commentCollection;
-    }
     
 }

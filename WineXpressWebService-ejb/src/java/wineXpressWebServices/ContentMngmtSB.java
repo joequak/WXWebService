@@ -49,7 +49,7 @@ public class ContentMngmtSB implements ContentMngmtSBLocal {
     public void makeComment(Product myProduct, String newComment, Customer cus) {
         Comment newCom = new Comment();
         newCom.setComment(newComment);
-        newCom.setStatus(true);
+        newCom.setcStatus(true);
         em.persist(newCom);
         myProduct.getCommentCollection().add(newCom);
         cus.getCommentCollection().add(newCom);
@@ -60,7 +60,7 @@ public class ContentMngmtSB implements ContentMngmtSBLocal {
 
     @Override
     public void deleteComment(Comment myComment) {
-        myComment.setStatus(false);
+        myComment.setcStatus(false);
         em.merge(myComment);
     }
 

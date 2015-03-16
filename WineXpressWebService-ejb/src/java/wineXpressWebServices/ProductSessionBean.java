@@ -12,6 +12,7 @@ import entity.Product;
 import entity.Rate;
 import entity.SubCategories;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -161,8 +162,15 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         Rate newRate = new Rate();
         newRate.setRate(myRate);
         em.persist(newRate);
-        cus.getRateCollection().add(newRate);
+        em.flush();
+        Collection<Rate> tuRate = cus.getRateCollection();
+        if (tuRate == null) {
+            tuRate = new ArrayList<Rate>();
+        }
+        tuRate.add(newRate);
+        cus.setRateCollection(tuRate);
         em.merge(cus);
+        em.flush();
         int numOfRates = myProduct.getRateCollection().size();
         double totalRates = myProduct.getAverageRate() * numOfRates;
         myProduct.getRateCollection().add(newRate);
@@ -176,18 +184,33 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     public void makeComment(Product myProduct, String newComment, Customer cus) {
         Comment newCom = new Comment();
         newCom.setComment(newComment);
-        newCom.setStatus(true);
+        newCom.setcStatus(true);
         em.persist(newCom);
-        myProduct.getCommentCollection().add(newCom);
-        cus.getCommentCollection().add(newCom);
-        em.merge(myProduct);
-        em.merge(cus);
+        em.flush();
+        Product prodTU = em.find(Product.class, myProduct.getId());
+        Collection<Comment> ptuComment = prodTU.getCommentCollection();
+        if (ptuComment == null) {
+            ptuComment = new ArrayList<Comment>();
+        }
+        ptuComment.add(newCom);
+        prodTU.setCommentCollection(ptuComment);
+        em.merge(prodTU);
+        em.flush();
+        Customer custTU = em.find(Customer.class, cus.getId());
+        Collection<Comment> ctuComment = custTU.getCommentCollection();
+        if (ctuComment == null) {
+            ctuComment = new ArrayList<Comment>();
+        }
+        ctuComment.add(newCom);
+        custTU.setCommentCollection(ctuComment);
+        em.merge(custTU);
+        em.flush();
 
     }
 
     @Override
     public void deleteComment(Comment myComment) {
-        myComment.setStatus(false);
+        myComment.setcStatus(false);
         em.merge(myComment);
     }
 
