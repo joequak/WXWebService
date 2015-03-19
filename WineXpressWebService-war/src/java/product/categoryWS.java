@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package product;
 
 import entity.Categories;
@@ -17,7 +16,7 @@ import wineXpressWebServices.CategorySessionBeanLocal;
 
 /**
  *
- * @author mac
+ * @author ¿.¿.¿
  */
 @WebService(serviceName = "categoryWS")
 public class categoryWS {
@@ -31,7 +30,7 @@ public class categoryWS {
     }
 
     @WebMethod(operationName = "searchCategories")
-    public List<Categories> searchCategories(@WebParam(name = "categoriesName") String categoriesName) {
+    public Categories searchCategories(@WebParam(name = "categoriesName") String categoriesName) {
         return ejbRef.searchCategories(categoriesName);
     }
 
@@ -59,6 +58,11 @@ public class categoryWS {
     @WebMethod(operationName = "getSubCategoryNameList")
     public List<String> getSubCategoryNameList(@WebParam(name = "categoryName") String categoryName) {
         return ejbRef.getSubCategoryNameList(categoryName);
+    }
+
+    @WebMethod(operationName = "editCategoryName")
+    public boolean editCategoryName(@WebParam(name = "newName") String newName, @WebParam(name = "myCat") Categories myCat) {
+        return ejbRef.editCategoryName(newName, myCat);
     }
     
 }

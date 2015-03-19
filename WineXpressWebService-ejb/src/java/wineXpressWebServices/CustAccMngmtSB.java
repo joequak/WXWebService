@@ -63,6 +63,7 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         //SQL query string to look if email is valid
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email").setParameter("email", emailAdd);
         //If email address is valid, find customer entity
+        System.out.println("going to activate");
         if (query.getResultList().size() == 1) {
             if (query.getResultList().get(0).getClass().equals(Customer.class)){
                 Customer toActivate = (Customer) query.getResultList().get(0);
@@ -73,6 +74,7 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
                 toActivate.setStatus(true);
                 em.getTransaction().commit(); */
                 returnValue = true;
+                System.out.println("activated");
             }
         }
         

@@ -20,15 +20,16 @@ import javax.ejb.Local;
 @Local
 public interface ProductSessionBeanLocal {
 
-    public long saveNewProduct(String picture,String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume);
+    public Product saveNewProduct(String picture, String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume);
 
     public List<Product> searchProduct(String productName);
 
     public List<Product> viewAllProducts();
 
-    public Product deleteProduct(long productId);
+    public boolean deleteProduct(Product productId);
 
-    public void editProduct(Product newProduct);
+    public void editProduct(Product newProduct, String picture, String productName, double productPrice, double productCost,
+            String productDescription, int productAQ, int productDiscount, String productVolume);
 
     public List<Categories> getAllCategories();
 
@@ -40,8 +41,12 @@ public interface ProductSessionBeanLocal {
 
     public void deleteComment(Comment myComment);
 
-   public Customer findCustomerById(long cusId);
+    public Customer findCustomerById(long cusId);
 
-    public void dataBaseInit();
+    void addProductSubcategories(SubCategories subCat, Product myPro);
 
-    }
+    List<SubCategories> productSubCategories(Product myPro);
+
+    List<Product> findProductByName(String pName);
+
+}

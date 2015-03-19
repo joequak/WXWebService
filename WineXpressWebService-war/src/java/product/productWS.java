@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package product;
 
 import entity.Categories;
@@ -21,7 +20,7 @@ import wineXpressWebServices.ProductSessionBeanLocal;
 
 /**
  *
- * @author mac
+ * @author ¿.¿.¿
  */
 @WebService(serviceName = "productWS")
 public class productWS {
@@ -30,7 +29,7 @@ public class productWS {
     // "Insert Code > Add Web Service Operation")
 
     @WebMethod(operationName = "saveNewProduct")
-    public long saveNewProduct(@WebParam(name = "picture") String picture, @WebParam(name = "productName") String productName, @WebParam(name = "productPrice") double productPrice, @WebParam(name = "productCost") double productCost, @WebParam(name = "productDescription") String productDescription, @WebParam(name = "productAQ") int productAQ, @WebParam(name = "productDiscount") int productDiscount, @WebParam(name = "productVolume") String productVolume) {
+    public Product saveNewProduct(@WebParam(name = "picture") String picture, @WebParam(name = "productName") String productName, @WebParam(name = "productPrice") double productPrice, @WebParam(name = "productCost") double productCost, @WebParam(name = "productDescription") String productDescription, @WebParam(name = "productAQ") int productAQ, @WebParam(name = "productDiscount") int productDiscount, @WebParam(name = "productVolume") String productVolume) {
         return ejbRef.saveNewProduct(picture, productName, productPrice, productCost, productDescription, productAQ, productDiscount, productVolume);
     }
 
@@ -45,14 +44,14 @@ public class productWS {
     }
 
     @WebMethod(operationName = "deleteProduct")
-    public Product deleteProduct(@WebParam(name = "productId") long productId) {
+    public boolean deleteProduct(@WebParam(name = "productId") Product productId) {
         return ejbRef.deleteProduct(productId);
     }
 
     @WebMethod(operationName = "editProduct")
     @Oneway
-    public void editProduct(@WebParam(name = "newProduct") Product newProduct) {
-        ejbRef.editProduct(newProduct);
+    public void editProduct(@WebParam(name = "newProduct") Product newProduct, @WebParam(name = "picture") String picture, @WebParam(name = "productName") String productName, @WebParam(name = "productPrice") double productPrice, @WebParam(name = "productCost") double productCost, @WebParam(name = "productDescription") String productDescription, @WebParam(name = "productAQ") int productAQ, @WebParam(name = "productDiscount") int productDiscount, @WebParam(name = "productVolume") String productVolume) {
+        ejbRef.editProduct(newProduct, picture, productName, productPrice, productCost, productDescription, productAQ, productDiscount, productVolume);
     }
 
     @WebMethod(operationName = "getAllCategories")
@@ -88,10 +87,20 @@ public class productWS {
         return ejbRef.findCustomerById(cusId);
     }
 
-    @WebMethod(operationName = "dataBaseInit")
+    @WebMethod(operationName = "addProductSubcategories")
     @Oneway
-    public void dataBaseInit() {
-        ejbRef.dataBaseInit();
+    public void addProductSubcategories(@WebParam(name = "subCat") SubCategories subCat, @WebParam(name = "myPro") Product myPro) {
+        ejbRef.addProductSubcategories(subCat, myPro);
+    }
+
+    @WebMethod(operationName = "productSubCategories")
+    public List<SubCategories> productSubCategories(@WebParam(name = "myPro") Product myPro) {
+        return ejbRef.productSubCategories(myPro);
+    }
+
+    @WebMethod(operationName = "findProductByName")
+    public List<Product> findProductByName(@WebParam(name = "pName") String pName) {
+        return ejbRef.findProductByName(pName);
     }
     
 }

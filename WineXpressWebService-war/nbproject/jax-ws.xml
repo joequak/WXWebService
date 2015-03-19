@@ -10,6 +10,15 @@
     <service name="AdminAccMngmtWS">
       <implementation-class>com.wx.accountManagement.AdminAccMngmtWS</implementation-class>
     </service>
+    <service name="subCategoryWS">
+      <implementation-class>product.subCategoryWS</implementation-class>
+    </service>
+    <service name="categoryWS">
+      <implementation-class>product.categoryWS</implementation-class>
+    </service>
+    <service name="productWS">
+      <implementation-class>product.productWS</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>

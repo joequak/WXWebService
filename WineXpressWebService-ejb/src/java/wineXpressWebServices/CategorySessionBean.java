@@ -47,16 +47,16 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public List<Categories> searchCategories(String categoryName) {
+    public Categories searchCategories(String categoryName) {
         Query query = em.createQuery("select p from Categories p where p.name = :pName");
         query.setParameter("pName", categoryName);
-        return query.getResultList();
+        return (Categories) query.getSingleResult();
     }
 
     @Override
     public List<Categories> viewAllCategories() {
         Query query = em.createQuery("select p from Categories p");
-        List<Categories> returnList = new ArrayList<>();
+        List<Categories> returnList = query.getResultList();
         return returnList;
     }
 
@@ -67,7 +67,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         if (category.getSubCategoriesCollection().isEmpty()) {
             em.remove(category);
             em.flush();
-            result=true;
+            result = true;
         }
 
         return result;
@@ -110,4 +110,23 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
             return subCategoryList;
         }
     }
+
+    @Override
+    public boolean editCategoryName(String newName, Categories myCat) {
+        boolean result = true;
+        Query q = em.createQuery("SELECT c FROM Categories c");
+        for (Object o : q.getResultList()) {
+            Categories myc = (Categories) o;
+            if (myc.getName().equalsIgnoreCase(newName)) {
+                result = false;
+            }
+        }
+        if (result) {
+            myCat.setName(newName);
+            em.merge(myCat);
+            em.flush();
+        }
+        return false;
+    }
+
 }

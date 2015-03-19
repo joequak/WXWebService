@@ -6,7 +6,11 @@
 package wineXpressWebServices;
 
 import entity.Categories;
+import entity.Product;
 import entity.SubCategories;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,6 +40,9 @@ public class SubCategorySessionBean implements SubCategorySessionBeanLocal {
             SubCategories newSub = new SubCategories();
             newSub.setName(subName);
             em.persist(newSub);
+            category.getSubCategoriesCollection().add(newSub);
+            em.merge(category);
+            em.flush();
         }
 
         return result;
@@ -44,6 +51,7 @@ public class SubCategorySessionBean implements SubCategorySessionBeanLocal {
     @Override
     public boolean deleteSubCategory(SubCategories mySub) {
         boolean result = false;
+        SubCategories deSub = em.find(SubCategories.class, mySub.getId());
         Categories myCat = new Categories();
         Query q = em.createQuery("SELECT c FROM Categories c");
         for (Object o : q.getResultList()) {
@@ -51,14 +59,63 @@ public class SubCategorySessionBean implements SubCategorySessionBeanLocal {
             for (Object oo : cat.getSubCategoriesCollection()) {
                 SubCategories sub = (SubCategories) oo;
                 if (sub.getName().equalsIgnoreCase(mySub.getName())) {
-                    cat.getSubCategoriesCollection().remove(sub);
-                    em.remove(mySub);
-                    em.flush();
-                    result =true;
+                   myCat = cat;
+                   break;
+                }
+            }
+        }
+        if(myCat!=null){
+            Collection<SubCategories> toUpdate = myCat.getSubCategoriesCollection();
+            toUpdate.remove(deSub);
+            myCat.setSubCategoriesCollection(toUpdate);
+            em.merge(myCat);
+            em.flush();
+            
+            em.remove(deSub);
+            em.flush();
+            result=true;
+        }
+        
+        return result;
+    }
+
+    @Override
+    public Categories getCategoryById(long caId) {
+        Categories myCat = new Categories();
+        myCat = em.find(Categories.class, caId);
+        return myCat;
+    }
+
+    @Override
+    public List<SubCategories> getProductAllSubCate(Product myProduct) {
+        List<SubCategories> result = new ArrayList();
+        Query q = em.createQuery("SELECT c FROM SubCategories c");
+        for(Object o: q.getResultList()){
+            SubCategories sub = (SubCategories) o;
+            for(Object oo: sub.getProductCollection()){
+                Product myPro = (Product )oo;
+                if(myPro.getId()==myProduct.getId()){
+                    result.add(sub);
                 }
             }
         }
         return result;
     }
+
+    @Override
+    public void removeProductFromSubCate(List<SubCategories> listOfSub, Product myProduct) {
+          for (Object o : listOfSub) {
+            SubCategories ss = (SubCategories) o;
+            if (ss.getProductCollection().contains(myProduct)) {
+                ss.getProductCollection().remove(myProduct);
+                em.persist(ss);
+            }
+        }
+    }
+    
+    
+
+
+
 
 }

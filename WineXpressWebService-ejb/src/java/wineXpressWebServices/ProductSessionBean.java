@@ -33,58 +33,7 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     }
 
     @Override
-    public void dataBaseInit() {
-        Categories newCat = new Categories();
-        newCat.setName("Origin");
-        em.persist(newCat);
-
-        SubCategories newSub1 = new SubCategories();
-        newSub1.setName("France");
-        newSub1.setProductCollection(new ArrayList());
-        em.persist(newSub1);
-        SubCategories newSub2 = new SubCategories();
-        newSub2.setName("Italy");
-        newSub2.setProductCollection(new ArrayList());
-        em.persist(newSub2);
-        SubCategories newSub3 = new SubCategories();
-        newSub3.setName("Australia");
-        newSub3.setProductCollection(new ArrayList());
-        em.persist(newSub3);
-        SubCategories newSub4 = new SubCategories();
-        newSub4.setName("Grace");
-        newSub4.setProductCollection(new ArrayList());
-        em.persist(newSub4);
-
-        newCat.getSubCategoriesCollection().add(newSub1);
-        newCat.getSubCategoriesCollection().add(newSub2);
-        newCat.getSubCategoriesCollection().add(newSub3);
-        newCat.getSubCategoriesCollection().add(newSub4);
-        em.merge(newCat);
-
-        Product newPro = new Product();
-        newPro.setAvailableQuantity(134);
-        newPro.setAverageRate(4.5);
-        newPro.setPicture("./../images/productImg/wine_1.png");
-        newPro.setCommentCollection(new ArrayList());
-        newPro.setCost(35);
-        newPro.setDiscount(10);
-        newPro.setName("Vado");
-        newPro.setNumberOfRate(23);
-        newPro.setOrderItemCollection(new ArrayList());
-        newPro.setPicture("");
-        newPro.setPrice(34);
-        newPro.setRateCollection(new ArrayList());
-        newPro.setSoldQuantity(12);
-        newPro.setVolumn("1l");
-        newPro.setStatus(1);
-        newPro.setDescription("Valdo has two wineries locate over a 20,000 sqm surface area: the first winery is headqund is synonymous with excellence in sparkling wine culture where tradition meets innovation.");
-        em.persist(newPro);
-
-        newSub1.getProductCollection().add(newPro);
-        em.merge(newSub1);
-    }
-
-    public long saveNewProduct(String picture, String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
+    public Product saveNewProduct(String picture, String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
         String newUrl = "./../images/productImg/" + picture;
         Product product = new Product();
         product.setPicture(newUrl);
@@ -96,8 +45,16 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
         product.setDiscount(productDiscount);
         product.setNumberOfRate(0);
         product.setVolumn(productVolume);
+        product.setProductStatus(1);
         em.persist(product);
-        return product.getId();
+        return product;
+    }
+
+    @Override
+    public void addProductSubcategories(SubCategories subCat, Product myPro) {
+        subCat.getProductCollection().add(myPro);
+        em.merge(subCat);
+        em.flush();
     }
 
     // Add business logic below. (Right-click in editor and choose
@@ -116,25 +73,37 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     }
 
     @Override
-    public Product deleteProduct(long productId) {
-        System.out.println("productSessionBean");
-        Product product = em.find(Product.class, productId);
-        product.setStatus(0);
-        em.persist(product);
+    public boolean deleteProduct(Product myProduct) {
+        myProduct.setProductStatus(0);
+        em.merge(myProduct);
         em.flush();
-        return product;
+        return true;
+//        Query query = em.createQuery("select s from SubCategories s ");
+//        for (Object o : query.getResultList()) {
+//            SubCategories ss = (SubCategories) o;
+//            if (ss.getProductCollection().contains(myProduct)) {
+//                ss.getProductCollection().remove(myProduct);
+//                em.persist(ss);
+//            }
+//        }
+//        em.remove(myProduct);
+//        em.flush();
+//        return true;
     }
 
     @Override
-    public void editProduct(Product newProduct) {
-        Product origin = em.find(Product.class, newProduct.getId());
-        origin.setName(newProduct.getName());
-        origin.setPrice(newProduct.getPrice());
-        origin.setCost(newProduct.getCost());
-        origin.setAvailableQuantity(newProduct.getAvailableQuantity());
-        origin.setDescription(newProduct.getDescription());
-        origin.setDiscount(newProduct.getDiscount());
-        em.persist(origin);
+    public void editProduct(Product newProduct, String picture, String productName, double productPrice, double productCost,
+            String productDescription, int productAQ, int productDiscount, String productVolume) {
+        newProduct.setPicture(picture);
+        newProduct.setPrice(productPrice);
+        newProduct.setAvailableQuantity(productAQ);
+        newProduct.setPrice(productPrice);
+        newProduct.setCost(productCost);
+        newProduct.setDescription(productDescription);
+        newProduct.setDiscount(productDiscount);
+        newProduct.setVolumn(productVolume);
+        em.merge(newProduct);
+        em.flush();
 
     }
 
@@ -216,8 +185,39 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
 
     @Override
     public Customer findCustomerById(long cusId) {
-      
+
         Customer myCus = (Customer) em.find(Customer.class, cusId);
         return myCus;
+    }
+
+    @Override
+    public List<SubCategories> productSubCategories(Product myPro) {
+        List<SubCategories> result = new ArrayList();
+        Query q = em.createQuery("SELECT c FROM SubCategories c");
+        for (Object o : q.getResultList()) {
+            SubCategories mySub = (SubCategories) o;
+            for (Object oo : mySub.getProductCollection()) {
+                Product pro = (Product) oo;
+                if (pro.getId() == myPro.getId()) {
+                    result.add(mySub);
+                    break;
+                }
+
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Product> findProductByName(String pName) {
+        List<Product> result = new ArrayList(0);
+        Query q = em.createQuery("SELECT c FROM Product c");
+        for (Object o : q.getResultList()) {
+            Product myPro = (Product) o;
+            if (myPro.getName().contains(pName)) {
+                result.add(myPro);
+            }
+        }
+        return result;
     }
 }

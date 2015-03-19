@@ -63,7 +63,7 @@ public class Product implements Serializable {
     private String volumn;
 
     @Column(name = "status")
-    private int status =1;
+    private int productStatus =1;
 
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Comment> commentCollection = new ArrayList();
@@ -303,12 +303,14 @@ public class Product implements Serializable {
         this.numberOfRate = numberOfRate;
     }
 
-    public int getStatus() {
-        return status;
+    public int getProductStatus() {
+        return productStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setProductStatus(int productStatus) {
+        this.productStatus = productStatus;
     }
+
+   
 
 }

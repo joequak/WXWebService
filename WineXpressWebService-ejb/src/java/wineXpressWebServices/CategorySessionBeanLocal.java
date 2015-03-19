@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package wineXpressWebServices;
 
 import entity.Categories;
@@ -12,16 +11,24 @@ import javax.ejb.Local;
 
 /**
  *
- * @author wangyan  
+ * @author wangyan
  */
 @Local
 public interface CategorySessionBeanLocal {
-     public long saveNewCategories(String categoriesName);
-     public List<Categories> searchCategories(String categoriesName);
-     public List<Categories> viewAllCategories();
-    public boolean deleteCategories(long categoryId);
-     public void editCategories(Categories newCategories);
-     public List<String> getCategoriesName();
-     public List<String> getSubCategoryNameList(String categoryName);
-}
 
+    public long saveNewCategories(String categoriesName);
+
+    public Categories searchCategories(String categoriesName);
+
+    public List<Categories> viewAllCategories();
+
+    public boolean deleteCategories(long categoryId);
+
+    public void editCategories(Categories newCategories);
+
+    public List<String> getCategoriesName();
+
+    public List<String> getSubCategoryNameList(String categoryName);
+
+    public boolean editCategoryName(String newName, Categories myCat);
+}

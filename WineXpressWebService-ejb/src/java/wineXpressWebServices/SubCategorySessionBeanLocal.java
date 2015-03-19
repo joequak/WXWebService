@@ -6,7 +6,9 @@
 package wineXpressWebServices;
 
 import entity.Categories;
+import entity.Product;
 import entity.SubCategories;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -19,4 +21,10 @@ public interface SubCategorySessionBeanLocal {
     public boolean addNewSubcategory(Categories category, String subName);
 
     public boolean deleteSubCategory(SubCategories mySub);
+
+    public Categories getCategoryById(long caId);
+
+    public List<SubCategories> getProductAllSubCate(Product myProduct);
+
+    void removeProductFromSubCate(List<SubCategories> listOfSub, Product myProduct);
 }

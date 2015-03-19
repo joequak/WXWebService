@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package WS;
 
 import entity.CustEnquiry;
@@ -16,7 +15,7 @@ import wineXpressWebServices.CustSupportSBLocal;
 
 /**
  *
- * @author Ruoxi
+ * @author ¿.¿.¿
  */
 @WebService(serviceName = "CustSupportWS")
 public class CustSupportWS {
