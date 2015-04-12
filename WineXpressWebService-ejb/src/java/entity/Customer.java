@@ -45,8 +45,10 @@ public class Customer implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCollection")
-    private Collection<ShipToAddress> shipToAddressCollection;
+   //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCollection")
+    //private Collection<ShipToAddress> shipToAddressCollection;
+    @OneToOne(cascade = {CascadeType.ALL})
+    private ShipToAddress shipAddress;
     
     @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCollection")
     private Collection<BillToAddress> billToAdressCollection;
@@ -57,8 +59,10 @@ public class Customer implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<OrderDetail> orderDetailCollection = new ArrayList<OrderDetail>();
     
-    @ManyToMany(cascade = {CascadeType.ALL})
-    private Collection<CreditCard> creditCardCollection;
+   //@ManyToMany(cascade = {CascadeType.ALL})
+   // private Collection<CreditCard> creditCardCollection;
+    @OneToOne(cascade = {CascadeType.ALL})
+    private CreditCard creditCard;
     
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Rate> rateCollection;
@@ -75,13 +79,7 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
+   
 
     @Override
     public int hashCode() {
@@ -234,20 +232,7 @@ public class Customer implements Serializable {
         this.orderDetailCollection = orderDetailCollection;
     }
 
-    /**
-     * @return the creditCardCollection
-     */
-    public Collection<CreditCard> getCreditCardCollection() {
-        return creditCardCollection;
-    }
-
-    /**
-     * @param creditCardCollection the creditCardCollection to set
-     */
-    public void setCreditCardCollection(Collection<CreditCard> creditCardCollection) {
-        this.creditCardCollection = creditCardCollection;
-    }
-
+   
     /**
      * @return the rateCollection
      */
@@ -260,6 +245,34 @@ public class Customer implements Serializable {
      */
     public void setRateCollection(Collection<Rate> rateCollection) {
         this.rateCollection = rateCollection;
+    }
+
+        /**
+     * @return the shipAddress
+     */
+    public ShipToAddress getShipAddress() {
+        return shipAddress;
+    }
+
+    /**
+     * @param shipAddress the shipAddress to set
+     */
+    public void setShipAddress(ShipToAddress shipAddress) {
+        this.shipAddress = shipAddress;
+    }
+
+    /**
+     * @return the creditCard
+     */
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    /**
+     * @param creditCard the creditCard to set
+     */
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
     
 }

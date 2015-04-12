@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -38,8 +39,9 @@ public class CreditCard implements Serializable {
     @Column(name = "type", length = 45)
     private String type;
     
-    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "creditCardCollection")
-    private Collection<Customer> customerCollection;
+    //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "creditCardCollection")
+  //  private Collection<Customer> customerCollection;
+    @OneToOne(mappedBy = "creditCard")
 
     public Long getId() {
         return id;
@@ -130,18 +132,6 @@ public class CreditCard implements Serializable {
         this.type = type;
     }
 
-    /**
-     * @return the customerCollection
-     */
-    public Collection<Customer> getCustomerCollection() {
-        return customerCollection;
-    }
-
-    /**
-     * @param customerCollection the customerCollection to set
-     */
-    public void setCustomerCollection(Collection<Customer> customerCollection) {
-        this.customerCollection = customerCollection;
-    }
+ 
     
 }

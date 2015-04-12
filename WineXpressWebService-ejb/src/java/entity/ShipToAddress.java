@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -47,8 +48,9 @@ public class ShipToAddress implements Serializable {
     @Column(name = "contactNumber", length = 100)
     private String contactNumber;
     
-    @ManyToMany(cascade = {CascadeType.ALL})
-    private Collection<Customer> customerCollection;
+    //@ManyToMany(cascade = {CascadeType.ALL})
+    //private Collection<Customer> customerCollection;
+    @OneToOne(mappedBy = "shipAddress")
 
     public Long getId() {
         return id;
@@ -181,18 +183,6 @@ public class ShipToAddress implements Serializable {
         this.contactNumber = contactNumber;
     }
 
-    /**
-     * @return the customerCollection
-     */
-    public Collection<Customer> getCustomerCollection() {
-        return customerCollection;
-    }
-
-    /**
-     * @param customerCollection the customerCollection to set
-     */
-    public void setCustomerCollection(Collection<Customer> customerCollection) {
-        this.customerCollection = customerCollection;
-    }
+ 
     
 }

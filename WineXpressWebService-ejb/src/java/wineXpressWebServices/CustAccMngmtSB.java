@@ -5,8 +5,10 @@
  */
 package wineXpressWebServices;
 
+import entity.CreditCard;
 import entity.Customer;
 import entity.OrderDetail;
+import entity.ShipToAddress;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -23,20 +25,19 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     //Entity Manager to read write to DB
     @PersistenceContext
     private EntityManager em;
-
+    
     public CustAccMngmtSB() {
     }
-    
+
     //Vistor Method
     @Override
-    public boolean registerAsMember (Customer newCust) {
+    public boolean registerAsMember(Customer newCust) {
         //Initialise returnValue type.
         boolean returnValue = false;
-        
+
         //Check if email is taken
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email").setParameter("email", newCust.getEmail());
         //If email address is valid, register customer to DB
@@ -47,32 +48,53 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
             toRegist.setEmail(newCust.getEmail());
             toRegist.setPassword(newCust.getPassword());
             toRegist.setStatus(false);
-            em.persist(toRegist);     
+            //added in RX
+            ShipToAddress address = new ShipToAddress();
+            address.setAddress1(null);
+            address.setAddress2(null);
+            address.setCity(null);
+            address.setContactNumber(null);
+            address.setCountry(null);
+            address.setPostalcode(null);
+            address.setShipState("0");
+            toRegist.setShipAddress(address);
+            
+            CreditCard credit= new CreditCard();
+            credit.setCardHolder(null);
+            credit.setCardNumber(null);
+            credit.setExpDate(null);
+            credit.setType("0");
+            toRegist.setCreditCard(credit);
+            
+            em.persist(address);
+            em.persist(credit);
+            
+            em.persist(toRegist);            
             returnValue = true;
         }
         
         return returnValue;
     }
-    
+
     //Visitor Method
     @Override
-    public boolean activateAccount (String emailAdd) {
+    public boolean activateAccount(String emailAdd) {
         //Initialise returnValue type to return.
         boolean returnValue = false;
-        
+
         //SQL query string to look if email is valid
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email").setParameter("email", emailAdd);
         //If email address is valid, find customer entity
         System.out.println("going to activate");
         if (query.getResultList().size() == 1) {
-            if (query.getResultList().get(0).getClass().equals(Customer.class)){
+            if (query.getResultList().get(0).getClass().equals(Customer.class)) {
                 Customer toActivate = (Customer) query.getResultList().get(0);
                 toActivate.setStatus(true);
                 em.persist(toActivate);
                 /* Or Alternatively
-                em.getTransaction().begin();
-                toActivate.setStatus(true);
-                em.getTransaction().commit(); */
+                 em.getTransaction().begin();
+                 toActivate.setStatus(true);
+                 em.getTransaction().commit(); */
                 returnValue = true;
                 System.out.println("activated");
             }
@@ -80,19 +102,19 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         
         return returnValue;
     }
-    
+
     //Member Method
     @Override
-    public long logInMember (String emailAdd, String password) {
+    public long logInMember(String emailAdd, String password) {
         //Initialise returnValue type to return.
         long returnValue = -1;
-        
+
         //SQL query string to look if email is valid
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email").setParameter("email", emailAdd);
-        
+
         //If email address is valid
         if (query.getResultList().size() == 1) {
-            if (query.getResultList().get(0).getClass().equals(Customer.class)){
+            if (query.getResultList().get(0).getClass().equals(Customer.class)) {
                 Customer toLogin = (Customer) query.getResultList().get(0);
                 //Check account status
                 if (toLogin.getStatus()) {
@@ -106,16 +128,15 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         
         return returnValue;
     }
-    
-    //Member Method
 
+    //Member Method
     /**
      *
      * @param custID
      * @return
      */
-        @Override
-    public boolean logOutMember (long custID) {
+    @Override
+    public boolean logOutMember(long custID) {
         //Initialise returnValue type to return.
         boolean returnValue = false;
         
@@ -126,19 +147,18 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         
         return returnValue;
     }
-    
-    //Member Method
 
+    //Member Method
     /**
      *
      * @param custID
      * @return
      */
-        @Override
-    public Customer viewAccInfoMember (long custID) {
+    @Override
+    public Customer viewAccInfoMember(long custID) {
         //Initialise returnValue type to return.
         Customer returnValue = new Customer();
-        
+
         //Find customer in DB
         Customer toFind = em.find(Customer.class, custID);
         if (toFind != null) {
@@ -147,34 +167,32 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         
         return returnValue;        
     }
-    
-    //Member Method
 
+    //Member Method
     /**
      *
      * @param custID
      * @param newCust
      * @return
      */
-        @Override
-    public boolean editParticularsMember (long custID, Customer newCust) {
+    @Override
+    public boolean editParticularsMember(long custID, Customer newCust) {
         //Initialise returnValue type to return.
         boolean returnValue = false;
-        
+
         //Find customer in DB
         Customer tempCust = em.find(Customer.class, custID);
         if (tempCust != null) {
             tempCust.setFistName(newCust.getFistName());
-            tempCust.setLastName(newCust.getLastName()); 
+            tempCust.setLastName(newCust.getLastName());            
             em.persist(tempCust);
             returnValue = true;
         }
         
         return returnValue;
     }
-    
-    //Member Method
 
+    //Member Method
     /**
      *
      * @param custID
@@ -182,11 +200,11 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
      * @param newPW
      * @return
      */
-        @Override
-    public boolean changePwMember (long custID, String oldPW, String newPW) {
+    @Override
+    public boolean changePwMember(long custID, String oldPW, String newPW) {
         //Initialise returnValue type to return.
         boolean returnValue = false;
-        
+
         //Find customer in DB
         Customer tempCust = em.find(Customer.class, custID);
         if (tempCust != null) {
@@ -199,28 +217,27 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
         
         return returnValue;
     }
-        
-    //Member Method
 
+    //Member Method
     /**
      *
      * @param custID
      * @return
      */
-        @Override
-    public List<OrderDetail> viewPurchaseHistoryMember (long custID) {
+    @Override
+    public List<OrderDetail> viewPurchaseHistoryMember(long custID) {
         //Initialise returnValue type to return.
         List<OrderDetail> returnValue = new ArrayList<OrderDetail>();
-        
+
         //Find customer in DB
         Customer toFind = em.find(Customer.class, custID);
         if (toFind != null) {
             returnValue = (List<OrderDetail>) toFind.getOrderDetailCollection();
         }
-
+        
         return returnValue;
     }
-    
+
     /**
      *
      * @param emailAdd
@@ -228,22 +245,22 @@ public class CustAccMngmtSB implements CustAccMngmtSBLocal {
      * @return
      */
     @Override
-    public boolean resetPwMember (String emailAdd, String rstPW) {
+    public boolean resetPwMember(String emailAdd, String rstPW) {
         //Initialise returnValue type to return.
         boolean returnValue = false;
-        
+
         //SQL query string to look if email is valid
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.email = :email").setParameter("email", emailAdd);
         //If email address is valid, find customer entity
         if (query.getResultList().size() == 1) {
-            if (query.getResultList().get(0).getClass().equals(Customer.class)){
+            if (query.getResultList().get(0).getClass().equals(Customer.class)) {
                 Customer toRestPW = (Customer) query.getResultList().get(0);
                 toRestPW.setPassword(rstPW);
                 em.persist(toRestPW);
                 /* Or Alternatively
-                em.getTransaction().begin();
-                toActivate.setStatus(true);
-                em.getTransaction().commit(); */
+                 em.getTransaction().begin();
+                 toActivate.setStatus(true);
+                 em.getTransaction().commit(); */
                 returnValue = true;
             }
         }
