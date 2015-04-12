@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package product;
 
 import entity.Categories;
 import entity.Comment;
 import entity.Customer;
+import entity.OrderDetail;
+import entity.OrderItem;
 import entity.Product;
 import entity.SubCategories;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.jws.Oneway;
@@ -20,7 +24,7 @@ import wineXpressWebServices.ProductSessionBeanLocal;
 
 /**
  *
- * @author ¿.¿.¿
+ * @author user
  */
 @WebService(serviceName = "productWS")
 public class productWS {
@@ -101,6 +105,43 @@ public class productWS {
     @WebMethod(operationName = "findProductByName")
     public List<Product> findProductByName(@WebParam(name = "pName") String pName) {
         return ejbRef.findProductByName(pName);
+    }
+
+    @WebMethod(operationName = "AddOrderItemAndShoppingCart")
+    public long AddOrderItemAndShoppingCart(@WebParam(name = "customer") Customer customer, @WebParam(name = "product") Product product, @WebParam(name = "quantity") int quantity) {
+        return ejbRef.AddOrderItemAndShoppingCart(customer, product, quantity);
+    }
+
+    @WebMethod(operationName = "getShoppingCartList")
+    public Collection<OrderItem> getShoppingCartList(@WebParam(name = "customer") Customer customer) {
+        return ejbRef.getShoppingCartList(customer);
+    }
+
+    @WebMethod(operationName = "updateOrderItemQuantity")
+    @Oneway
+    public void updateOrderItemQuantity(@WebParam(name = "orderItem") OrderItem orderItem) {
+        ejbRef.updateOrderItemQuantity(orderItem);
+    }
+
+    @WebMethod(operationName = "calculateFinalCost")
+    public Double calculateFinalCost(@WebParam(name = "selectedItems") List<OrderItem> selectedItems) {
+        return ejbRef.calculateFinalCost(selectedItems);
+    }
+
+    @WebMethod(operationName = "createOrderDetail")
+    public OrderDetail createOrderDetail(@WebParam(name = "selectedItems") List<OrderItem> selectedItems, @WebParam(name = "customer") Customer customer) {
+        return ejbRef.createOrderDetail(selectedItems, customer);
+    }
+
+    @WebMethod(operationName = "deleteOrderList")
+    @Oneway
+    public void deleteOrderList(@WebParam(name = "orderItems") List<OrderItem> orderItems, @WebParam(name = "customer") Customer customer) {
+        ejbRef.deleteOrderList(orderItems, customer);
+    }
+
+    @WebMethod(operationName = "getCustomerLatestOrderDetail")
+    public Collection<OrderItem> getCustomerLatestOrderDetail(@WebParam(name = "customer") Customer customer) {
+        return ejbRef.getCustomerLatestOrderDetail(customer);
     }
     
 }
