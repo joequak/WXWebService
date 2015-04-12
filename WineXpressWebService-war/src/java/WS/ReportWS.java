@@ -25,11 +25,6 @@ public class ReportWS {
     private ReportSessionBeanLocal ejbRef;// Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Web Service Operation")
 
-    @WebMethod(operationName = "orderWithinDates")
-    public List<OrderDetail> orderWithinDates(@WebParam(name = "start") Date start, @WebParam(name = "end") Date end) {
-        return ejbRef.orderWithinDates(start, end);
-    }
-
     @WebMethod(operationName = "getTotalValueofDay")
     public double getTotalValueofDay(@WebParam(name = "orderList") List<OrderDetail> orderList, @WebParam(name = "day") int day) {
         return ejbRef.getTotalValueofDay(orderList, day);
@@ -48,11 +43,6 @@ public class ReportWS {
     @WebMethod(operationName = "retrieveTotalDay")
     public long retrieveTotalDay(@WebParam(name = "start") Date start, @WebParam(name = "end") Date end) {
         return ejbRef.retrieveTotalDay(start, end);
-    }
-
-    @WebMethod(operationName = "retrieveTotalMonth")
-    public int retrieveTotalMonth(@WebParam(name = "start") Date start, @WebParam(name = "end") Date end) {
-        return ejbRef.retrieveTotalMonth(start, end);
     }
 
     @WebMethod(operationName = "totalProfit")
@@ -83,6 +73,16 @@ public class ReportWS {
     @WebMethod(operationName = "getTotalValueOfMonth")
     public double getTotalValueOfMonth(@WebParam(name = "orderList") List<OrderDetail> orderList, @WebParam(name = "month") int month, @WebParam(name = "year") int year) {
         return ejbRef.getTotalValueOfMonth(orderList, month, year);
+    }
+
+    @WebMethod(operationName = "orderWithinDates")
+    public List<OrderDetail> orderWithinDates(@WebParam(name = "sday") int sday, @WebParam(name = "smonth") int smonth, @WebParam(name = "syear") int syear, @WebParam(name = "eday") int eday, @WebParam(name = "emonth") int emonth, @WebParam(name = "eyear") int eyear) {
+        return ejbRef.orderWithinDates(sday, smonth, syear, eday, emonth, eyear);
+    }
+
+    @WebMethod(operationName = "retrieveTotalMonth")
+    public int retrieveTotalMonth(@WebParam(name = "sday") int sday, @WebParam(name = "smonth") int smonth, @WebParam(name = "syear") int syear, @WebParam(name = "eday") int eday, @WebParam(name = "emonth") int emonth, @WebParam(name = "eyear") int eyear) {
+        return ejbRef.retrieveTotalMonth(sday, smonth, syear, eday, emonth, eyear);
     }
     
 }
