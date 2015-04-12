@@ -5,12 +5,19 @@
  */
 package wineXpressWebServices;
 
+import static com.sun.tools.xjc.reader.Ring.end;
 import entity.OrderDetail;
 import entity.OrderItem;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -93,14 +100,27 @@ public class ReportSessionBean implements ReportSessionBeanLocal {
     }
 
     @Override
-    public List<OrderDetail> orderWithinDates(Date start, Date end) {
+    public List<OrderDetail> orderWithinDates(int sday, int smonth, int syear, int eday, int emonth, int eyear) {
+        Date start;
+        Date end;
+        Calendar sdate = Calendar.getInstance();
+        sdate.set(Calendar.YEAR, syear);
+        sdate.set(Calendar.MONTH, smonth);
+        sdate.set(Calendar.DAY_OF_MONTH, sday);
+        Date sDate = sdate.getTime();
+        Calendar edate = Calendar.getInstance();
+        edate.set(Calendar.YEAR, eyear);
+        edate.set(Calendar.MONTH, emonth);
+        edate.set(Calendar.DAY_OF_MONTH, eday);
+        Date eDate = edate.getTime();
+        
         System.out.println(")_____________++++++++++++++order of within  @@@@@@@@@@@@@@@");
         List<OrderDetail> result = new ArrayList();
         Query q = em.createQuery("SELECT c FROM OrderDetail c");
         for (Object o : q.getResultList()) {
             OrderDetail myOrder = (OrderDetail) o;
             Date orderDate = myOrder.getOrdDate();
-            if ((orderDate.after(start) || orderDate.equals(start)) && (orderDate.before(end) || orderDate.equals(end))) {
+            if ((orderDate.after(sDate) || orderDate.equals(sDate)) && (orderDate.before(eDate) || orderDate.equals(eDate))) {
                 result.add(myOrder);
             }
         }
@@ -156,13 +176,27 @@ public class ReportSessionBean implements ReportSessionBeanLocal {
     }
 
     @Override
-    public int retrieveTotalMonth(Date start, Date end) {
+    public int retrieveTotalMonth(int sday, int smonth, int syear, int eday, int emonth, int eyear) {
+       Date start;
+        Date end;
+        Calendar sdate = Calendar.getInstance();
+        sdate.set(Calendar.YEAR, syear);
+        sdate.set(Calendar.MONTH, smonth);
+        sdate.set(Calendar.DAY_OF_MONTH, sday);
+        Date sDate = sdate.getTime();
+        Calendar edate = Calendar.getInstance();
+        edate.set(Calendar.YEAR, eyear);
+        edate.set(Calendar.MONTH, emonth);
+        edate.set(Calendar.DAY_OF_MONTH, eday);
+        Date eDate = edate.getTime();
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        
         int diffMonth = 0;
-        if (start != null && end != null) {
+        if (sDate != null && eDate != null) {
             Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTime(start);
+            startCalendar.setTime(sDate);
             Calendar endCalendar = Calendar.getInstance();
-            endCalendar.setTime(end);
+            endCalendar.setTime(eDate);
             int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
             diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH) + 1;
         }
