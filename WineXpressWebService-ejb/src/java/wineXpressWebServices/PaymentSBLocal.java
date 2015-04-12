@@ -19,8 +19,10 @@ public interface PaymentSBLocal {
     public ShipToAddress fetchAddress(String email);
 
     public void updateAddress(String email, ShipToAddress newAddress);
-    
-       public CreditCard fetchCredit(String email) ;
-       
-       public void updateCredit(String email, CreditCard newCredit) ;
+
+    public CreditCard fetchCredit(String email);
+
+    public void updateCredit(String email, CreditCard newCredit);
+
+    public void createPaymentRecord(long orderID, double price, String name);
 }

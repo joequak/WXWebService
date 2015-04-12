@@ -176,19 +176,7 @@ public class Customer implements Serializable {
         this.status = status;
     }
 
-    /**
-     * @return the shipToAddressCollection
-     */
-    public Collection<ShipToAddress> getShipToAddressCollection() {
-        return shipToAddressCollection;
-    }
-
-    /**
-     * @param shipToAddressCollection the shipToAddressCollection to set
-     */
-    public void setShipToAddressCollection(Collection<ShipToAddress> shipToAddressCollection) {
-        this.shipToAddressCollection = shipToAddressCollection;
-    }
+    
 
     /**
      * @return the billToAdressCollection
@@ -273,6 +261,20 @@ public class Customer implements Serializable {
      */
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    /**
+     * @return the shoppingCart
+     */
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    /**
+     * @param shoppingCart the shoppingCart to set
+     */
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
     
 }

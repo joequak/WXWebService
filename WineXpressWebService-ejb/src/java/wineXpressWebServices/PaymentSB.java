@@ -7,6 +7,8 @@ package wineXpressWebServices;
 
 import entity.CreditCard;
 import entity.Customer;
+import entity.OrderDetail;
+import entity.Payment;
 import entity.ShipToAddress;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -102,6 +104,23 @@ public class PaymentSB implements PaymentSBLocal {
         em.merge(credit);
         cust.setCreditCard(credit);
         em.merge(cust);
+    }
+    @Override
+    public void createPaymentRecord(long orderID, double price, String name ){
+        System.out.println("orderID is at Payment session" + orderID);
+       
+        OrderDetail ord=em.find(OrderDetail.class, orderID);
+        
+        Payment payment = new Payment();
+        payment.setAmount(price);
+        payment.setCardHolder(name);
+        payment.setMethod("PayPal");
+        
+        em.persist(payment);
+        ord.setPayment(payment);
+
+        em.merge(ord);
+        em.merge(payment);
     }
 
     public void persist(Object object) {

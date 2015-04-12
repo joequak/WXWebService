@@ -24,7 +24,7 @@ import wineXpressWebServices.ProductSessionBeanLocal;
 
 /**
  *
- * @author user
+ * @author Ruoxi
  */
 @WebService(serviceName = "productWS")
 public class productWS {

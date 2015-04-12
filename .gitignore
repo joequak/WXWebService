@@ -1,3 +1,9 @@
 /nbproject/private/
 /WineXpressWebService-war/nbproject/private/
 /WineXpressWebService-ejb/nbproject/private/
+/WineXpressWebService-ejb/build/
+/WineXpressWebService-ejb/dist/
+/WineXpressWebService-war/build/
+/WineXpressWebService-war/dist/
+/build/
+/dist/

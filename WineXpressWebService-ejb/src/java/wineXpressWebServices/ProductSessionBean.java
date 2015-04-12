@@ -279,8 +279,9 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
     
     @Override
     public OrderDetail createOrderDetail(List<OrderItem> selectedItems, Customer customer){
-        System.out.println("_%%%%%1_");
+            System.out.println("_%%%%%1_");
         OrderDetail od = new OrderDetail();
+        od.setTotalPrice(this.calculateFinalCost(selectedItems));
         od.setOrderItemCollection(selectedItems);
         em.merge(od);
         em.flush();
@@ -289,7 +290,17 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
          System.out.println("_%%%%%1_1");
         em.merge(customer);
          System.out.println("_%%%%%1_11");
-         return od;
+         //delete orderItems in customer Shopping cart
+         Collection<OrderItem> sis = new ArrayList<OrderItem>(selectedItems);
+         ShoppingCart csc = customer.getShoppingCart();
+         csc.getOrderItems().removeAll(sis);
+         em.merge(csc);
+         
+         em.merge(customer);
+       Customer c =   em.find(Customer.class, customer.getId());
+         List<OrderDetail> rods = new ArrayList<>(c.getOrderDetailCollection());
+       return   rods.get(rods.size()-1);
+       
     }
         
     @Override

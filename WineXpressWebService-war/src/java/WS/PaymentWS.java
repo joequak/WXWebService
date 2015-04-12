@@ -46,5 +46,11 @@ public class PaymentWS {
     public void updateCredit(@WebParam(name = "email") String email, @WebParam(name = "newCredit") CreditCard newCredit) {
         ejbRef.updateCredit(email, newCredit);
     }
+
+    @WebMethod(operationName = "createPaymentRecord")
+    @Oneway
+    public void createPaymentRecord(@WebParam(name = "orderID") long orderID, @WebParam(name = "price") double price, @WebParam(name = "name") String name) {
+        ejbRef.createPaymentRecord(orderID, price, name);
+    }
     
 }
