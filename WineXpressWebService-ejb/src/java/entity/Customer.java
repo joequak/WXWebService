@@ -50,9 +50,6 @@ public class Customer implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private ShipToAddress shipAddress;
     
-    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "customerCollection")
-    private Collection<BillToAddress> billToAdressCollection;
-    
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Comment> commentCollection;
     
@@ -174,22 +171,6 @@ public class Customer implements Serializable {
      */
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    
-
-    /**
-     * @return the billToAdressCollection
-     */
-    public Collection<BillToAddress> getBillToAdressCollection() {
-        return billToAdressCollection;
-    }
-
-    /**
-     * @param billToAdressCollection the billToAdressCollection to set
-     */
-    public void setBillToAdressCollection(Collection<BillToAddress> billToAdressCollection) {
-        this.billToAdressCollection = billToAdressCollection;
     }
 
     /**
