@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -53,14 +54,18 @@ public class Customer implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Comment> commentCollection;
     
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customer")
-    private Collection<OrderDetail> orderDetailCollection;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Collection<OrderDetail> orderDetailCollection = new ArrayList<OrderDetail>();
     
     @ManyToMany(cascade = {CascadeType.ALL})
     private Collection<CreditCard> creditCardCollection;
     
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Rate> rateCollection;
+    
+    @OneToOne(cascade={CascadeType.PERSIST})
+    private ShoppingCart  shoppingCart = new ShoppingCart(); 
+
 
     public Long getId() {
         return id;
@@ -68,6 +73,14 @@ public class Customer implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     @Override

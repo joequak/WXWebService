@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -31,12 +32,12 @@ public class OrderItem implements Serializable {
     @Column(name = "subtotal")
     private double subtotal;
 
-    @ManyToOne
+   @OneToOne
     private Product product;
     
-    @ManyToOne
-    private OrderDetail orderDetail;
-
+   
+    
+    
     public Long getId() {
         return id;
     }
@@ -112,18 +113,6 @@ public class OrderItem implements Serializable {
         this.product = product;
     }
 
-    /**
-     * @return the orderDetail
-     */
-    public OrderDetail getOrderDetail() {
-        return orderDetail;
-    }
-
-    /**
-     * @param orderDetail the orderDetail to set
-     */
-    public void setOrderDetail(OrderDetail orderDetail) {
-        this.orderDetail = orderDetail;
-    }
+   
     
 }

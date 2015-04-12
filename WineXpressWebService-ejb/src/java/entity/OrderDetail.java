@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -98,11 +99,9 @@ public class OrderDetail implements Serializable {
     @Column(name = "sContactNum", length = 45)
     private String sContactNum;
     
-    @ManyToOne
-    private Customer customer;
    
-    @OneToMany (cascade = {CascadeType.ALL}, mappedBy = "orderDetail")
-    private Collection<OrderItem> orderItemCollection;
+    @OneToMany (cascade = {CascadeType.ALL})
+    private Collection<OrderItem> orderItemCollection = new ArrayList<OrderItem>();
     
     @OneToOne (cascade = {CascadeType.ALL})
     private Payment payment;
@@ -462,19 +461,7 @@ public class OrderDetail implements Serializable {
         this.sContactNum = sContactNum;
     }
 
-    /**
-     * @return the customer
-     */
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    /**
-     * @param customer the customer to set
-     */
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+    
 
     /**
      * @return the orderItemCollection

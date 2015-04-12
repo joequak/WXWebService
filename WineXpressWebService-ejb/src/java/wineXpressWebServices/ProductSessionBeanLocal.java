@@ -8,8 +8,11 @@ package wineXpressWebServices;
 import entity.Categories;
 import entity.Comment;
 import entity.Customer;
+import entity.OrderDetail;
+import entity.OrderItem;
 import entity.Product;
 import entity.SubCategories;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -49,4 +52,17 @@ public interface ProductSessionBeanLocal {
 
     List<Product> findProductByName(String pName);
 
+    public long AddOrderItemAndShoppingCart(Customer customer, Product product, int quantity);
+
+    public Collection<OrderItem> getShoppingCartList(Customer customer);
+
+    public void updateOrderItemQuantity(OrderItem orderItem);
+
+    public Double calculateFinalCost(List<OrderItem> selectedItems);
+
+    public OrderDetail createOrderDetail(List<OrderItem> selectedItems, Customer customer);
+
+    public void deleteOrderList(List<OrderItem> orderItems, Customer customer);
+
+    public Collection<OrderItem> getCustomerLatestOrderDetail(Customer customer);
 }

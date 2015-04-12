@@ -71,8 +71,8 @@ public class Product implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Rate> rateCollection = new ArrayList();
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "product")
-    private Collection<OrderItem> orderItemCollection;
+  //  @OneToMany(cascade = {CascadeType.ALL},mappedBy = "product")
+  //  private Collection<OrderItem> orderItemCollection ;
 
     public Long getId() {
         return id;
@@ -261,20 +261,7 @@ public class Product implements Serializable {
         this.rateCollection = rateCollection;
     }
 
-    /**
-     * @return the orderItemCollection
-     */
-    public Collection<OrderItem> getOrderItemCollection() {
-        return orderItemCollection;
-    }
-
-    /**
-     * @param orderItemCollection the orderItemCollection to set
-     */
-    public void setOrderItemCollection(Collection<OrderItem> orderItemCollection) {
-        this.orderItemCollection = orderItemCollection;
-    }
-
+   
     /**
      * @return the cost
      */

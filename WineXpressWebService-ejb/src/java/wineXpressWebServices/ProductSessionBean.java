@@ -8,8 +8,11 @@ package wineXpressWebServices;
 import entity.Categories;
 import entity.Comment;
 import entity.Customer;
+import entity.OrderDetail;
+import entity.OrderItem;
 import entity.Product;
 import entity.Rate;
+import entity.ShoppingCart;
 import entity.SubCategories;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +37,7 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
 
     @Override
     public Product saveNewProduct(String picture, String productName, double productPrice, double productCost, String productDescription, int productAQ, int productDiscount, String productVolume) {
-        String newUrl = "./../images/productImg/" + picture;
+        String newUrl = "./../images/productImg/" + picture; 
         Product product = new Product();
         product.setPicture(newUrl);
         product.setName(productName);
@@ -219,5 +222,88 @@ public class ProductSessionBean implements ProductSessionBeanLocal {
             }
         }
         return result;
+    }
+    
+    //create orderItem for product: customer, Product, quantity
+    @Override
+    public long AddOrderItemAndShoppingCart(Customer customer, Product product, int quantity){
+       ShoppingCart customerSC = customer.getShoppingCart();
+       for(Object o:customerSC.getOrderItems()){
+           OrderItem existedOI = (OrderItem)o;
+           if(existedOI.getProduct().equals(product)){
+               existedOI.setQuantity(quantity+existedOI.getQuantity());
+               em.merge(existedOI);
+               return 2l;
+           }
+       }
+       
+        OrderItem oi = new OrderItem();
+        System.out.println("&&&&successfully addOrderItems1");
+        oi.setProduct(product);     
+        oi.setQuantity(quantity);
+        em.persist(oi);
+        //add orderItem to product
+     //   product.getOrderItemCollection().add(oi);
+      //  System.out.println("&&&&successfully addOrderItems2");
+      //  em.merge(product);
+        System.out.println("&&&&successfully addOrderItems3");
+        //add orderItem to shoppingcart
+        ShoppingCart shoppingcart = customer.getShoppingCart();
+        shoppingcart.getOrderItems().add(oi);
+        em.merge(shoppingcart);
+        System.out.println("&&&&successfully addOrderItems");
+        return 2l;
+        
+    }
+    @Override
+    public Collection<OrderItem> getShoppingCartList(Customer customer){
+        ShoppingCart sc = customer.getShoppingCart();
+        return sc.getOrderItems();
+    }
+      
+    @Override
+    public void updateOrderItemQuantity(OrderItem orderItem){
+        OrderItem old = em.find(OrderItem.class, orderItem.getId());
+        old.setQuantity(orderItem.getQuantity());
+        em.merge(old);
+    }
+    @Override
+    public Double calculateFinalCost(List<OrderItem> selectedItems){
+            Double cost = 0.0;
+        for(Object o: selectedItems){
+            OrderItem  oi = (OrderItem)o;
+            cost = cost + (oi.getProduct().getPrice())*oi.getQuantity()* (1-oi.getProduct().getDiscount()*0.01) ;
+        }
+        return cost;
+    }
+    
+    @Override
+    public OrderDetail createOrderDetail(List<OrderItem> selectedItems, Customer customer){
+        System.out.println("_%%%%%1_");
+        OrderDetail od = new OrderDetail();
+        od.setOrderItemCollection(selectedItems);
+        em.merge(od);
+        em.flush();
+         System.out.println("_%%%%%1_");
+        customer.getOrderDetailCollection().add(od);
+         System.out.println("_%%%%%1_1");
+        em.merge(customer);
+         System.out.println("_%%%%%1_11");
+         return od;
+    }
+        
+    @Override
+    public void deleteOrderList(List<OrderItem> orderItems,Customer customer){
+        ShoppingCart sc = customer.getShoppingCart();
+        Collection<OrderItem> oi = new ArrayList<OrderItem>(orderItems);
+        sc.getOrderItems().removeAll(oi);
+        em.merge(sc);
+        System.out.println("$$$$!!remove");
+    }
+    
+    @Override 
+    public Collection<OrderItem> getCustomerLatestOrderDetail(Customer customer){
+       List<OrderDetail> od = new ArrayList<>(customer.getOrderDetailCollection());
+       return od.get(od.size()-1).getOrderItemCollection();
     }
 }
